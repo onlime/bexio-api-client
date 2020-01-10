@@ -4,9 +4,9 @@ namespace Bexio\Contract;
 
 interface ItemPosition
 {
-    public function listItemPositions($parentId, $params = []);
-    public function showItemPosition($parentId, $itemId);
-    public function createItemPosition($parentId, $params = []);
-    public function editItemPosition($parentId, $itemId, $params = []);
-    public function deleteItemPosition($parentId, $itemId);
+    public function listItemPositions(int $parentId, array $params = []);
+    public function showItemPosition(int $parentId, int $itemId);
+    public function createItemPosition(int $parentId, array $params = []);
+    public function editItemPosition(int $parentId, int $itemId, array $params = []);
+    public function deleteItemPosition(int $parentId, int $itemId);
 }

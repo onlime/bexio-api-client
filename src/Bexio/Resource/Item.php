@@ -9,9 +9,9 @@ use Bexio\Bexio;
  * @package Bexio\Resource
  * https://docs.bexio.com/ressources/article/
  */
-class Item extends Bexio {
-
-    /**
+class Item extends Bexio
+{
+   /**
      * Gets all items
      *
      * @param array $params
@@ -32,5 +32,4 @@ class Item extends Bexio {
     {
         return $this->client->get('article_type', $params);
     }
-
 }

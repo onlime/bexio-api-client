@@ -4,8 +4,8 @@ namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
-class Discount extends Bexio {
-
+class Discount extends Bexio
+{
     /**
      * Gets all discounts
      * 
@@ -13,7 +13,7 @@ class Discount extends Bexio {
      * @param int $parentId
      * @return array
      */
-    public function getDiscounts($resource, $parentId, array $params = [])
+    public function getDiscounts(string $resource, int $parentId, array $params = [])
     {
         return $this->client->get("$resource/$parentId/kb_position_discount", $params);
     }
@@ -26,7 +26,7 @@ class Discount extends Bexio {
      * @param array $params
      * @return mixed
      */
-    public function searchDiscounts($resource, $parentId, array $params = [])
+    public function searchDiscounts(string $resource, int $parentId, array $params = [])
     {
         return $this->client->get("$resource/$parentId/kb_position_discount", $params);
     }
@@ -39,7 +39,7 @@ class Discount extends Bexio {
      * @param $id
      * @return mixed
      */
-    public function getDiscount($resource, $parentId, $id)
+    public function getDiscount(string $resource, int $parentId, $id)
     {
         return $this->client->get("$resource/$parentId/kb_position_discount/" . $id, []);
     }
@@ -52,9 +52,8 @@ class Discount extends Bexio {
      * @param array $params
      * @return mixed
      */
-    public function createDiscount($resource, $parentId, $params = [])
+    public function createDiscount(string $resource, int $parentId, array $params = [])
     {
         return $this->client->post("$resource/$parentId/kb_position_discount", $params);
     }
-
 }

@@ -12,7 +12,6 @@ use Bexio\Bexio;
  */
 class Invoice extends Bexio
 {
-
     /**
      * Gets all orders
      *
@@ -37,10 +36,10 @@ class Invoice extends Bexio
     /**
      * Get specific invoice
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function getInvoice($id)
+    public function getInvoice(int $id)
     {
         return $this->client->get('kb_invoice/'.$id, []);
     }
@@ -48,10 +47,10 @@ class Invoice extends Bexio
     /**
      * Get specific invoice PDF
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function getPdf($id)
+    public function getPdf(int $id)
     {
         return $this->client->get('kb_invoice/'.$id.'/pdf', []);
     }
@@ -62,7 +61,7 @@ class Invoice extends Bexio
      * @param array $params
      * @return mixed
      */
-    public function createInvoice($params = [])
+    public function createInvoice(array $params = [])
     {
         return $this->client->post('kb_invoice', $params);
     }
@@ -70,11 +69,11 @@ class Invoice extends Bexio
     /**
      * Edit invoice
      *
-     * @param       $id
+     * @param int   $id
      * @param array $params
      * @return mixed
      */
-    public function editInvoice($id, $params = [])
+    public function editInvoice(int $id, array $params = [])
     {
         return $this->client->post('kb_invoice/'.$id, $params);
     }
@@ -82,10 +81,10 @@ class Invoice extends Bexio
     /**
      * Delete invoice
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function deleteInvoice($id)
+    public function deleteInvoice(int $id)
     {
         return $this->client->delete('kb_invoice/'.$id, []);
     }
@@ -93,10 +92,10 @@ class Invoice extends Bexio
     /**
      * Issue specific invoice
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function issueInvoice($id)
+    public function issueInvoice(int $id)
     {
         return $this->client->post('kb_invoice/'.$id.'/issue', []);
     }
@@ -104,22 +103,21 @@ class Invoice extends Bexio
     /**
      * Send specific invoice
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function sendInvoice($id)
+    public function sendInvoice(int $id)
     {
         return $this->client->post('kb_invoice/'.$id.'/send', []);
     }
 
     /**
      * Mark specific invoice as sent
-     *s
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function markInvoiceAsSent($id)
+    public function markInvoiceAsSent(int $id)
     {
         return $this->client->post('kb_invoice/'.$id.'/mark_as_sent', []);
     }
@@ -128,10 +126,10 @@ class Invoice extends Bexio
     /**
      * Get comments
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function getComments($id)
+    public function getComments(int $id)
     {
         return $this->client->get('kb_invoice/'.$id.'/comment');
     }
@@ -139,11 +137,11 @@ class Invoice extends Bexio
     /**
      * Get specific comment
      *
-     * @param $id
-     * @param $commentId
+     * @param int $id
+     * @param int $commentId
      * @return mixed
      */
-    public function getComment($id, $commentId)
+    public function getComment(int $id, int $commentId)
     {
         return $this->client->get('kb_invoice/'.$id.'/comment/'.$commentId);
     }
@@ -151,11 +149,11 @@ class Invoice extends Bexio
     /**
      * Create comment
      *
-     * @param       $id
+     * @param int   $id
      * @param array $params
      * @return mixed
      */
-    public function createComment($id, $params = [])
+    public function createComment(int $id, array $params = [])
     {
         return $this->client->post('kb_invoice/'.$id.'/comment', $params);
     }
@@ -163,10 +161,10 @@ class Invoice extends Bexio
     /**
      * Get specific invoice payments
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function getInvoicePayments($id)
+    public function getInvoicePayments(int $id)
     {
         return $this->client->get('kb_invoice/'.$id.'/payment', []);
     }
@@ -174,11 +172,11 @@ class Invoice extends Bexio
     /**
      * Get specific invoice payment
      *
-     * @param $id
-     * @param $paymentId
+     * @param int $id
+     * @param int $paymentId
      * @return mixed
      */
-    public function getInvoicePayment($id, $paymentId)
+    public function getInvoicePayment(int $id, int $paymentId)
     {
         return $this->client->get('kb_invoice/'.$id.'/payment/'.$paymentId, []);
     }
@@ -189,7 +187,7 @@ class Invoice extends Bexio
      * @param array $params
      * @return mixed
      */
-    public function createInvoicePayment($id, $params = [])
+    public function createInvoicePayment(int $id, array $params = [])
     {
         return $this->client->post('kb_invoice/'.$id.'/payment', $params);
     }
@@ -197,11 +195,11 @@ class Invoice extends Bexio
     /**
      * Celete a invoice payment
      *
-     * @param $id
-     * @param $paymentId
+     * @param int $id
+     * @param int $paymentId
      * @return mixed
      */
-    public function deleteInvoicePayment($id, $paymentId)
+    public function deleteInvoicePayment(int $id, int $paymentId)
     {
         return $this->client->delete('kb_invoice/'.$id.'/payment/'.$paymentId, []);
     }

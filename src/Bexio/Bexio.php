@@ -30,5 +30,4 @@ class Bexio
     {
         return $this->client->get('title', []);
     }
-    
 }

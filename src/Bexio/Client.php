@@ -81,7 +81,7 @@ class Client
 
     /**
      * @param $accessToken
-     * @throws \Exception
+     * @throws \UnexpectedValueException
      */
     public function setAccessToken($accessToken)
     {
@@ -96,11 +96,11 @@ class Client
         }
 
         if ($accessToken == null) {
-            throw new \Exception('Invalid json token');
+            throw new \UnexpectedValueException('Invalid json token');
         }
 
         if (!isset($accessToken['access_token'])) {
-            throw new \Exception("Invalid token format");
+            throw new \UnexpectedValueException('Invalid token format');
         }
         $this->accessToken = $accessToken;
     }
@@ -141,14 +141,12 @@ class Client
     {
         $auth = $this->getOAuth2Service();
         $auth->setRedirectUri($this->getRedirectUri());
-
-
     }
 
     public function fetchAccessTokenWithAuthCode($code)
     {
         if (strlen($code) === 0) {
-            throw new \Exception("Invalid code");
+            throw new \UnexpectedValueException("Invalid code");
         }
 
         $auth = $this->getOAuth2Service();
@@ -169,7 +167,7 @@ class Client
     {
         if ($refreshToken === null) {
             if (!isset($this->accessToken['refresh_token'])) {
-                throw new \Exception('Refresh token must be passed or set as part of the accessToken');
+                throw new \InvalidArgumentException('Refresh token must be passed or set as part of the accessToken');
             }
 
             $refreshToken = $this->accessToken['refresh_token'];

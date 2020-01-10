@@ -4,8 +4,8 @@ namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
-class Contact extends Bexio {
-
+class Contact extends Bexio
+{
     /**
      * Gets all the contacts
      *
@@ -34,7 +34,7 @@ class Contact extends Bexio {
      * @param $id
      * @return mixed
      */
-    public function getContact($id)
+    public function getContact(int $id)
     {
         return $this->client->get('contact/' . $id, []);
     }
@@ -57,7 +57,7 @@ class Contact extends Bexio {
      * @param array $params
      * @return mixed
      */
-    public function editContact($id, array $params = [])
+    public function editContact(int $id, array $params = [])
     {
         return $this->client->post('contact/'. $id, $params);
     }
@@ -79,7 +79,7 @@ class Contact extends Bexio {
      * @param $id
      * @return mixed
      */
-    public function deleteContact($id)
+    public function deleteContact(int $id)
     {
         return $this->client->delete('contact/' . $id);
     }
