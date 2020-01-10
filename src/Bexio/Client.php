@@ -30,18 +30,17 @@ class Client
     /**
      * Client constructor.
      *
-     * @param array $config
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $redirectUrl
      */
-    public function __construct(array $config = array())
+    public function __construct(string $clientId, string $clientSecret, string $redirectUrl = null)
     {
-        $this->config = array_merge(
-            [
-                'clientId'     => '',
-                'clientSecret' => '',
-                'redirectUri'  => null,
-            ],
-            $config
-        );
+        $this->config = [
+            'clientId'     => $clientId,
+            'clientSecret' => $clientSecret,
+            'redirectUrl'  => $redirectUrl
+        ];
     }
 
     public function setClientId($clientId)
@@ -64,14 +63,14 @@ class Client
         return $this->config['clientSecret'];
     }
 
-    public function setRedirectUri($redirectUri)
+    public function setRedirectUrl($redirectUrl)
     {
-        $this->config['redirectUri'] = $redirectUri;
+        $this->config['redirectUrl'] = $redirectUrl;
     }
 
-    public function getRedirectUri()
+    public function getRedirectUrl()
     {
-        return $this->config['redirectUri'];
+        return $this->config['redirectUrl'];
     }
 
     public function getOrg()
@@ -140,7 +139,7 @@ class Client
     public function fetchAuthCode()
     {
         $auth = $this->getOAuth2Service();
-        $auth->setRedirectUri($this->getRedirectUri());
+        $auth->setRedirectUrl($this->getRedirectUrl());
     }
 
     public function fetchAccessTokenWithAuthCode($code)
@@ -151,7 +150,7 @@ class Client
 
         $auth = $this->getOAuth2Service();
         $auth->setCode($code);
-        $auth->setRedirectUri($this->getRedirectUri());
+        $auth->setRedirectUrl($this->getRedirectUrl());
 
         $credentials = $auth->fetchAuthToken();
 
@@ -163,7 +162,7 @@ class Client
         return $credentials;
     }
 
-    public function refreshToken($refreshToken = null)
+    public function refreshToken(string $refreshToken = null)
     {
         if ($refreshToken === null) {
             if (!isset($this->accessToken['refresh_token'])) {
@@ -204,7 +203,7 @@ class Client
                     'authorizationUri'          => self::OAUTH2_AUTH_URL,
                     'tokenCredentialUri'        => self::OAUTH2_TOKEN_URI,
                     'refreshTokenCredentialUri' => self::OAUTH2_REFRESH_TOKEN_URI,
-                    'redirectUri'               => $this->getRedirectUri(),
+                    'redirectUrl'               => $this->getRedirectUrl(),
                     'issuer'                    => $this->config['clientId'],
                 ]
             );
@@ -224,7 +223,7 @@ class Client
         return $curl;
     }
 
-    public function get($path, array $parameters = [])
+    public function get(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
         $request->get(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
@@ -232,7 +231,7 @@ class Client
         return json_decode($request->response);
     }
 
-    public function post($path, array $parameters = [])
+    public function post(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
         $request->post(self::API_URL.'/'.$this->getOrg().'/'.$path, json_encode($parameters));
@@ -240,7 +239,7 @@ class Client
         return json_decode($request->response);
     }
 
-    public function postWithoutPayload($path)
+    public function postWithoutPayload(string $path)
     {
         $request = $this->getRequest();
         $request->post(self::API_URL.'/'.$this->getOrg().'/'.$path);
@@ -248,7 +247,7 @@ class Client
         return json_decode($request->response);
     }
 
-    public function put($path, array $parameters = [])
+    public function put(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
         $request->put(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
@@ -256,7 +255,7 @@ class Client
         return json_decode($request->response);
     }
 
-    public function delete($path, array $parameters = [])
+    public function delete(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
         $request->delete(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);

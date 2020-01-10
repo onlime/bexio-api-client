@@ -24,7 +24,7 @@ class OAuth2
                 'clientSecret'              => null,
                 'authorizationUri'          => null,
                 'refreshTokenCredentialUri' => null,
-                'redirectUri'               => null,
+                'redirectUrl'               => null,
                 'issuer'                    => null,
                 'code'                      => null,
                 'refreshToken'              => null,
@@ -75,14 +75,14 @@ class OAuth2
         $this->config['code'] = $code;
     }
 
-    public function getRedirectUri()
+    public function getRedirectUrl()
     {
-        return $this->config['redirectUri'];
+        return $this->config['redirectUrl'];
     }
 
-    public function setRedirectUri($redirectUri)
+    public function setRedirectUrl($redirectUrl)
     {
-        $this->config['redirectUri'] = $redirectUri;
+        $this->config['redirectUrl'] = $redirectUrl;
     }
 
     public function getGrantType()
@@ -128,7 +128,7 @@ class OAuth2
         switch ($grantType) {
             case 'authorization_code':
                 $params['code'] = $this->getCode();
-                $params['redirect_uri'] = $this->getRedirectUri();
+                $params['redirect_uri'] = $this->getRedirectUrl();
                 $this->addClientCredentials($params);
                 break;
             case 'refresh_token':
