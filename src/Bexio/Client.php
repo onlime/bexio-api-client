@@ -1,16 +1,13 @@
 <?php
-
 namespace Bexio;
 
-use Bexio\Auth\OAuth2;
+use Jumbojett\OpenIDConnectClient;
 use Curl\Curl;
 
 class Client
 {
-    const API_URL = 'https://office.bexio.com/api2.php';
-    const OAUTH2_AUTH_URL = 'https://office.bexio.com/oauth/authorize';
-    const OAUTH2_TOKEN_URI = 'https://office.bexio.com/oauth/access_token';
-    const OAUTH2_REFRESH_TOKEN_URI = 'https://office.bexio.com/oauth/refresh_token';
+    const PROVIDER_URL = 'https://idp.bexio.com';
+    const API_URL = 'https://api.bexio.com/2.0';
 
     /**
      * @var array $config
@@ -18,14 +15,9 @@ class Client
     private $config;
 
     /**
-     * @var
+     * @var string
      */
     private $accessToken;
-
-    /**
-     * @var
-     */
-    private $auth;
 
     /**
      * Client constructor.
@@ -73,34 +65,8 @@ class Client
         return $this->config['redirectUrl'];
     }
 
-    public function getOrg()
+    public function setAccessToken(string $accessToken)
     {
-        return $this->accessToken['org'];
-    }
-
-    /**
-     * @param $accessToken
-     * @throws \UnexpectedValueException
-     */
-    public function setAccessToken($accessToken)
-    {
-        if (is_string($accessToken)) {
-            if ($json = json_decode($accessToken, true)) {
-                $accessToken = $json;
-            } else {
-                $accessToken = [
-                    'access_token' => $accessToken,
-                ];
-            }
-        }
-
-        if ($accessToken == null) {
-            throw new \UnexpectedValueException('Invalid json token');
-        }
-
-        if (!isset($accessToken['access_token'])) {
-            throw new \UnexpectedValueException('Invalid token format');
-        }
         $this->accessToken = $accessToken;
     }
 
@@ -109,116 +75,59 @@ class Client
         return $this->accessToken;
     }
 
-    public function isAccessTokenExpired()
+    /**
+     * @return OpenIDConnectClient
+     */
+    public function getOpenIDConnectClient()
+    {
+        $oidc = new OpenIDConnectClient(
+            self::PROVIDER_URL, 
+            $this->getClientId(), 
+            $this->getClientSecret()
+        );
+        $oidc->setAccessToken($this->accessToken);
+        return $oidc;
+    }
+
+    public function authenticate($scopes)
+    {
+        if (!\is_array($scopes)) {
+            $scopes = \explode(' ', $scopes);
+        }
+        $oidc = $this->getOpenIDConnectClient();
+        $oidc->setRedirectURL($this->getRedirectUrl());
+        $oidc->addScope($scopes);
+        $oidc->authenticate();
+
+        $this->setAccessToken($oidc->getAccessToken());
+        return $oidc->getRefreshToken();
+    }
+
+    public function isAccessTokenExpired($gracePeriod = 30)
     {
         if (!$this->accessToken) {
             return true;
         }
-
-        $created = 0;
-        $expiresIn = 0;
-
-        if (isset($this->accessToken['created'])) {
-            $created = $this->accessToken['created'];
-        }
-
-        if (isset($this->accessToken['expires_in'])) {
-            $expiresIn = $this->accessToken['expires_in'];
-        }
-
-        return ($created + ($expiresIn - 30)) < time();
+        $payload = $this->getOpenIDConnectClient()->getAccessTokenPayload();
+        $expiry = $payload->exp ?? 0;
+        return time() > ($expiry - $gracePeriod);
     }
 
-    public function getRefreshToken()
+    public function refreshToken(string $refreshToken)
     {
-        if (isset($this->accessToken['refresh_token'])) {
-            return $this->accessToken['refresh_token'];
-        }
+        $oidc = $this->getOpenIDConnectClient();
+        $oidc->refreshToken($refreshToken);
+        $this->setAccessToken($oidc->getAccessToken());
+        // return new refreshToken
+        return $oidc->getRefreshToken();
     }
-
-    public function fetchAuthCode()
-    {
-        $auth = $this->getOAuth2Service();
-        $auth->setRedirectUrl($this->getRedirectUrl());
-    }
-
-    public function fetchAccessTokenWithAuthCode($code)
-    {
-        if (strlen($code) === 0) {
-            throw new \UnexpectedValueException("Invalid code");
-        }
-
-        $auth = $this->getOAuth2Service();
-        $auth->setCode($code);
-        $auth->setRedirectUrl($this->getRedirectUrl());
-
-        $credentials = $auth->fetchAuthToken();
-
-        if ($credentials && isset($credentials['access_token'])) {
-            $credentials['created'] = time();
-            $this->setAccessToken($credentials);
-        }
-
-        return $credentials;
-    }
-
-    public function refreshToken(string $refreshToken = null)
-    {
-        if ($refreshToken === null) {
-            if (!isset($this->accessToken['refresh_token'])) {
-                throw new \InvalidArgumentException('Refresh token must be passed or set as part of the accessToken');
-            }
-
-            $refreshToken = $this->accessToken['refresh_token'];
-        }
-
-        $auth = $this->getOAuth2Service();
-        $auth->setRefreshToken($refreshToken);
-
-        $credentials = $auth->fetchAuthToken();
-
-        if ($credentials && isset($credentials['access_token'])) {
-            $credentials['created'] = time();
-            if (!isset($credentials['refresh_token'])) {
-                $credentials['refresh_token'] = $refreshToken;
-            }
-            $this->setAccessToken($credentials);
-
-            return $credentials;
-        }
-
-        throw new \Exception('Illegal access token received when token was refreshed');
-    }
-
-    /**
-     * @return OAuth2
-     */
-    public function getOAuth2Service()
-    {
-        if (!isset($this->auth)) {
-            $this->auth = new OAuth2(
-                [
-                    'clientId'                  => $this->getClientId(),
-                    'clientSecret'              => $this->getClientSecret(),
-                    'authorizationUri'          => self::OAUTH2_AUTH_URL,
-                    'tokenCredentialUri'        => self::OAUTH2_TOKEN_URI,
-                    'refreshTokenCredentialUri' => self::OAUTH2_REFRESH_TOKEN_URI,
-                    'redirectUrl'               => $this->getRedirectUrl(),
-                    'issuer'                    => $this->config['clientId'],
-                ]
-            );
-        }
-
-        return $this->auth;
-    }
+    
 
     protected function getRequest()
     {
-        $accessToken = $this->getAccessToken();
-
         $curl = new Curl();
         $curl->setHeader('Accept', 'application/json');
-        $curl->setHeader('Authorization', 'Bearer '.$accessToken['access_token']);
+        $curl->setHeader('Authorization', 'Bearer ' . $this->getAccessToken());
 
         return $curl;
     }
@@ -226,7 +135,7 @@ class Client
     public function get(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
-        $request->get(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
+        $request->get(self::API_URL.'/'.$path, $parameters);
 
         return json_decode($request->response);
     }
@@ -234,7 +143,7 @@ class Client
     public function post(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
-        $request->post(self::API_URL.'/'.$this->getOrg().'/'.$path, json_encode($parameters));
+        $request->post(self::API_URL.'/'.$path, json_encode($parameters));
 
         return json_decode($request->response);
     }
@@ -242,7 +151,7 @@ class Client
     public function postWithoutPayload(string $path)
     {
         $request = $this->getRequest();
-        $request->post(self::API_URL.'/'.$this->getOrg().'/'.$path);
+        $request->post(self::API_URL.'/'.$path);
 
         return json_decode($request->response);
     }
@@ -250,7 +159,7 @@ class Client
     public function put(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
-        $request->put(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
+        $request->put(self::API_URL.'/'.$path, $parameters);
 
         return json_decode($request->response);
     }
@@ -258,7 +167,7 @@ class Client
     public function delete(string $path, array $parameters = [])
     {
         $request = $this->getRequest();
-        $request->delete(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
+        $request->delete(self::API_URL.'/'.$path, $parameters);
 
         return json_decode($request->response);
     }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Bexio\Resource;
 
 use Bexio\Bexio;

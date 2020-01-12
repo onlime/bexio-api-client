@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "curl/curl": "^1.6"
+        "curl/curl": "^1.6",
+        "jumbojett/openid-connect-php": "^0.8.0"
     },
     "autoload": {
         "psr-4": {

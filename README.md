@@ -12,7 +12,7 @@ You can use **Composer** or download the library.
 Require this package with composer:
 
 ```sh
-composer require christianruhstaller/bexio-api-php-client
+$ composer require christianruhstaller/bexio-api-php-client
 ```
 Include the autoloader:
 
@@ -21,77 +21,69 @@ require_once '/path/to/your-project/vendor/autoload.php';
 ```
 
 ## Examples
-Get access token
+
+> A fully working example can be found in `samples/` directory.
+
+Authenticate to get access and refresh tokens:
+
 ```php
+<?php
 require_once '../vendor/autoload.php';
 
-$clientId = '9999999999999.apps.bexio.com'; // The client id you have received from the bexio support
-$clientSecret = 'W1diwrEvHlgQMPRYdr3t6I1z5sQ='; // The client secret you have received from the bexio support
-$redirectUrl = 'http://localhost/bexio-api-php-client.php'; // Set here your Url where this script gets called
-$scope = 'general'; // A whitespace-separated list of scopes (see https://docs.bexio.com/oauth/scopes/).
-$state = '8OTs2JTDcWDaPqV7o9aHVWqM'; // A random sequence. Should be used as a protection against CSRF-Attacks
-$credentialsPath = 'client_credentials.json'; // Set the path where the credentials file will be stored
+use Bexio\Client;
 
-$curl = new \Curl\Curl();
+$clientId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+$clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+$redirectUrl = 'http://bexio-api-php-client.test/auth.php';
+$scopes = ['openid', 'profile', 'contact_edit', 'offline_access', 'kb_invoice_edit', 'bank_payment_edit'];
+$tokensFile = 'client_tokens.json';
 
-$client = new \Bexio\Client(
-    [
-        'clientId'     => $clientId,
-        'clientSecret' => $clientSecret,
-    ]
-);
-$client->setRedirectUrl($redirectUrl);
+$client = new Client($clientId, $clientSecret, $redirectUrl);
+$refreshToken = $client->authenticate($scopes);
 
-// If code is not set we need to get the authentication code
-if (!isset($_GET['code'])) {
-    $redirectTo = \Bexio\Client::OAUTH2_AUTH_URL.'?'.http_build_query(
-            [
-                'client_id'     => $clientId,
-                'client_secret' => $clientSecret,
-                'redirect_uri'  => $redirectUrl,
-                'scope'         => $scope,
-                'state'         => $state,
-            ]
-        );
+file_put_contents($tokensFile, json_encode([
+    'accessToken' => $client->getAccessToken(),
+    'refreshToken' => $refreshToken
+]));
+```
 
-    header('Location: '.$redirectTo);
-    exit;
-} else {
-    $accessToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-    file_put_contents($credentialsFile, json_encode($accessToken));
-    exit;
+Init client:
+
+```php
+<?php
+require_once '../vendor/autoload.php';
+
+use Bexio\Client;
+
+$clientId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+$clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+$tokensFile = 'client_tokens.json';
+
+$client = new Client($clientId, $clientSecret);
+
+// Load previously authorized credentials from a file
+if (!file_exists($tokensFile)) {
+    throw new Exception('Tokens file not found for OpenID Connect auth: ' . $tokensFile);
+}
+$tokens = json_decode(file_get_contents($tokensFile));
+$client->setAccessToken($tokens->accessToken);
+// Refresh access token if it is expired
+if ($client->isAccessTokenExpired()) {
+    $refreshToken = $client->refreshToken($tokens->refreshToken);
+    // store new tokens
+    file_put_contents($tokensFile, json_encode([
+        'accessToken' => $client->getAccessToken(),
+        'refreshToken' => $refreshToken
+    ]));
 }
 ```
 
-Init client 
-```php
-    require_once '../vendor/autoload.php';
-    
-    $client = new \Bexio\Client([
-        'clientId' => 'CLIENT_ID',
-        'clientSecret' => 'CLIENT_SECRET',
-    ]);
-    
-    $credentialsPath = 'PATH_TO_CREDENTIAL_FILE';
-    
-    if (!file_exists($credentialsPath)) {
-        throw new \Exception('Credentials file not found for OAuth: '.$credentialsPath);
-    }
-
-    $accessToken = file_get_contents($credentialsPath);
-    $client->setAccessToken($accessToken);
-
-    if ($client->isAccessTokenExpired()) {
-        $client->refreshToken($client->getRefreshToken());
-        file_put_contents($credentialsPath, $client->getAccessToken());
-    }
-```
-
-Get contacts
+Get contacts:
 
 ```php
-    $bexio = new \Bexio\Resource\Contact($client);
-    
-    $contacts = $bexio->getContacts();
-```
+<?php
+use Bexio\Resource\Contact;
 
+$bexioContact = new Contact($client);
+$contacts = $bexioContact->getContacts();
+```

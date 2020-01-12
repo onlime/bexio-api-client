@@ -1,5 +1,4 @@
 <?php
-
 namespace Bexio\Contract;
 
 interface ItemPosition
