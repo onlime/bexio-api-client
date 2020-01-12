@@ -82,4 +82,24 @@ class Contact extends Bexio
     {
         return $this->client->delete('contact/' . $id);
     }
+
+    /**
+     * Get available salutations
+     *
+     * @return mixed
+     */
+    public function getSalutations(array $params = [])
+    {
+        return $this->client->get('salutation', $params);
+    }
+
+    /**
+     * Get available titles
+     *
+     * @return mixed
+     */
+    public function getTitles(array $params = [])
+    {
+        return $this->client->get('title', $params);
+    }
 }
