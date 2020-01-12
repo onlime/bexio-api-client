@@ -7,13 +7,11 @@ use Bexio\Contract\ItemPosition;
 /**
  * Class Order
  * @package Bexio\Resource
- * https://docs.bexio.com/ressources/kb_order/
  */
 class Order extends Bexio implements ItemPosition
 {
     /**
      * Gets all orders
-     * https://docs.bexio.com/ressources/kb_order/#list-orders
      *
      * @param array $params
      * @return array
@@ -25,7 +23,6 @@ class Order extends Bexio implements ItemPosition
 
     /**
      * Search for orders
-     * https://docs.bexio.com/ressources/kb_order/#search-orders
      *
      * @param array $params
      * @return mixed
@@ -43,7 +40,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function getOrder(int $id)
     {
-        return $this->client->get('kb_order/' . $id, []);
+        return $this->client->get("kb_order/$id", []);
     }
 
     /**
@@ -66,7 +63,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function editOrder(int $id, array $params = [])
     {
-        return $this->client->post('kb_order/'. $id, $params);
+        return $this->client->post("kb_order/$id", $params);
     }
 
     /**
@@ -77,7 +74,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function deleteOrder(int $id)
     {
-        return $this->client->delete('kb_order/' . $id, []);
+        return $this->client->delete("kb_order/$id", []);
     }
 
     /**
@@ -88,7 +85,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function getRepetition(int $id)
     {
-        return $this->client->get('kb_order/' . $id . '/repetition', []);
+        return $this->client->get("kb_order/$id/repetition", []);
     }
 
     /**
@@ -100,7 +97,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function createRepetition(int $id, array $params = [])
     {
-        return $this->client->post('kb_order/' . $id . '/repetition', $params);
+        return $this->client->post("kb_order/$id/repetition", $params);
     }
 
     /**
@@ -111,7 +108,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function deleteRepetition(int $id)
     {
-        return $this->client->delete('kb_order/' . $id . '/repetition', []);
+        return $this->client->delete("kb_order/$id/repetition");
     }
 
     /**
@@ -121,7 +118,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function listItemPositions(int $parentId, array $params = [])
     {
-        return $this->client->get('kb_order/' . $parentId . '/kb_position_article', $params);
+        return $this->client->get("kb_order/$parentId/kb_position_article", $params);
     }
 
     /**
@@ -131,7 +128,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function showItemPosition(int $parentId, int $itemId)
     {
-        return $this->client->get('kb_order/' . $parentId . '/kb_position_article/' . $itemId);
+        return $this->client->get("kb_order/$parentId/kb_position_article/$itemId");
     }
 
     /**
@@ -141,7 +138,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function createItemPosition(int $parentId, array $params = [])
     {
-        return $this->client->post('kb_order/' . $parentId . '/kb_position_article', $params);
+        return $this->client->post("kb_order/$parentId/kb_position_article", $params);
     }
 
     /**
@@ -152,7 +149,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function editItemPosition(int $parentId, int $itemId, array $params = [])
     {
-        return $this->client->post('kb_order/' . $parentId . '/kb_position_article/' . $itemId, $params);
+        return $this->client->post("kb_order/$parentId/kb_position_article/$itemId", $params);
     }
 
     /**
@@ -163,7 +160,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function overwriteItemPosition(int $parentId, int $itemId, array $params = [])
     {
-        return $this->client->put('kb_order/' . $parentId . '/kb_position_article/' . $itemId, $params);
+        return $this->client->put("kb_order/$parentId/kb_position_article/$itemId", $params);
     }
 
     /**
@@ -173,7 +170,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function deleteItemPosition(int $parentId, int $itemId)
     {
-        return $this->client->delete('kb_order/' . $parentId . '/kb_position_article/' . $itemId);
+        return $this->client->delete("kb_order/$parentId/kb_position_article/$itemId");
     }
 
     /**
@@ -183,7 +180,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function createInvoice(int $id, array $params = [])
     {
-        return $this->client->post('kb_order/' . $id . '/invoice', $params);
+        return $this->client->post("kb_order/$id/invoice", $params);
     }
 
     /**
@@ -193,7 +190,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function createInvoiceWithAllOpenPositions(int $id)
     {
-        return $this->client->postWithoutPayload('kb_order/' . $id . '/invoice');
+        return $this->client->postWithoutPayload("kb_order/$id/invoice");
     }
 
     /**
@@ -204,7 +201,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function getPdf(int $id)
     {
-        return $this->client->get('kb_order/' . $id . '/pdf');
+        return $this->client->get("kb_order/$id/pdf");
     }
 
     /**
@@ -215,7 +212,7 @@ class Order extends Bexio implements ItemPosition
      */
     public function getComments(int $id)
     {
-        return $this->client->get('kb_order/' . $id . '/comment');
+        return $this->client->get("kb_order/$id/comment");
     }
 
     /**
@@ -227,12 +224,11 @@ class Order extends Bexio implements ItemPosition
      */
     public function getComment(int $id, int $commentId)
     {
-        return $this->client->get('kb_order/' . $id . '/comment/' . $commentId);
+        return $this->client->get("kb_order/$id/comment/$commentId");
     }
 
     /**
      * Create comment
-     * https://docs.bexio.com/ressources/kb_order/#create-comment
      *
      * @param int $id
      * @param array $params
@@ -240,6 +236,6 @@ class Order extends Bexio implements ItemPosition
      */
     public function createComment(int $id, array $params = [])
     {
-        return $this->client->post('kb_order/' . $id . '/comment', $params);
+        return $this->client->post("kb_order/$id/comment", $params);
     }
 }

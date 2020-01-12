@@ -3,6 +3,10 @@ namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
+/**
+ * Class Discount
+ * @package Bexio\Resource
+ */
 class Discount extends Bexio
 {
     /**
@@ -34,13 +38,13 @@ class Discount extends Bexio
      * Get specific discount
      *
      * @param string $resource
-     * @param $parentId
-     * @param $id
+     * @param int $parentId
+     * @param int $id
      * @return mixed
      */
-    public function getDiscount(string $resource, int $parentId, $id)
+    public function getDiscount(string $resource, int $parentId, int $id)
     {
-        return $this->client->get("$resource/$parentId/kb_position_discount/" . $id, []);
+        return $this->client->get("$resource/$parentId/kb_position_discount/$id");
     }
 
     /**

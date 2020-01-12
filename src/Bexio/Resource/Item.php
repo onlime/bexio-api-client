@@ -6,7 +6,6 @@ use Bexio\Bexio;
 /**
  * Class Item
  * @package Bexio\Resource
- * https://docs.bexio.com/ressources/article/
  */
 class Item extends Bexio
 {
