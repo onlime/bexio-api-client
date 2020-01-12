@@ -17,11 +17,7 @@ $scopes = ['openid', 'profile', 'contact_edit', 'offline_access', 'kb_invoice_ed
 $tokensFile = 'client_tokens.json';
 
 $client = new Client($clientId, $clientSecret, $redirectUrl);
-$refreshToken = $client->authenticate($scopes);
-
-file_put_contents($tokensFile, json_encode([
-    'accessToken' => $client->getAccessToken(),
-    'refreshToken' => $refreshToken
-]));
+$client->authenticate($scopes);
+$client->persistTokens($tokensFile);
 ?>
 Sucessfully authenticated. <a href="sample.php">Proceed to sample.php</a>

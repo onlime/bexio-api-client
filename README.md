@@ -32,6 +32,13 @@ require_once '../vendor/autoload.php';
 
 use Bexio\Client;
 
+/**
+ * $clientId: The client ID you have received from Bexio developer portal (https://developer.bexio.com/).
+ * $clientSecret: The client secret you have received from Bexio developer portal (https://developer.bexio.com/).
+ * $redirectUrl: Set your URL where this script gets called and set it as allowed redirect URL in your app settings in Bexio developer portal (https://developer.bexio.com/).
+ * $scopes: A list of scopes (see https://docs.bexio.com/#section/Authentication/API-Scopes).
+ * $tokensFile: Set the path where the credentials file will be stored.
+ */
 $clientId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 $clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 $redirectUrl = 'http://bexio-api-php-client.test/auth.php';
@@ -39,12 +46,8 @@ $scopes = ['openid', 'profile', 'contact_edit', 'offline_access', 'kb_invoice_ed
 $tokensFile = 'client_tokens.json';
 
 $client = new Client($clientId, $clientSecret, $redirectUrl);
-$refreshToken = $client->authenticate($scopes);
-
-file_put_contents($tokensFile, json_encode([
-    'accessToken' => $client->getAccessToken(),
-    'refreshToken' => $refreshToken
-]));
+$client->authenticate($scopes);
+$client->persistTokens($tokensFile);
 ```
 
 Init client:
@@ -60,22 +63,7 @@ $clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 $tokensFile = 'client_tokens.json';
 
 $client = new Client($clientId, $clientSecret);
-
-// Load previously authorized credentials from a file
-if (!file_exists($tokensFile)) {
-    throw new Exception('Tokens file not found for OpenID Connect auth: ' . $tokensFile);
-}
-$tokens = json_decode(file_get_contents($tokensFile));
-$client->setAccessToken($tokens->accessToken);
-// Refresh access token if it is expired
-if ($client->isAccessTokenExpired()) {
-    $refreshToken = $client->refreshToken($tokens->refreshToken);
-    // store new tokens
-    file_put_contents($tokensFile, json_encode([
-        'accessToken' => $client->getAccessToken(),
-        'refreshToken' => $refreshToken
-    ]));
-}
+$client->loadTokens($tokensFile);
 ```
 
 Get contacts:

@@ -20,6 +20,11 @@ class Client
     private $accessToken;
 
     /**
+     * @var string
+     */
+    private $refreshToken;
+
+    /**
      * Client constructor.
      *
      * @param string $clientId
@@ -75,6 +80,42 @@ class Client
         return $this->accessToken;
     }
 
+    public function setRefreshToken(string $refreshToken)
+    {
+        $this->refreshToken = $refreshToken;
+    }
+
+    public function getRefreshToken()
+    {
+        return $this->refreshToken;
+    }
+
+    public function persistTokens(string $tokensFile)
+    {
+        $result = file_put_contents($tokensFile, json_encode([
+            'accessToken' => $this->getAccessToken(),
+            'refreshToken' => $this->getRefreshToken()
+        ]));
+        return ($result !== false);
+    }
+
+    public function loadTokens(string $tokensFile)
+    {
+        if (!file_exists($tokensFile)) {
+            throw new \Exception('Tokens file not found: ' . $tokensFile);
+        }
+        $tokens = json_decode(file_get_contents($tokensFile));
+
+        $this->setAccessToken($tokens->accessToken);
+        $this->setRefreshToken($tokens->refreshToken);
+
+        // Refresh access token if it is expired
+        if ($this->isAccessTokenExpired()) {
+            $this->refreshToken();
+            $this->persistTokens($tokensFile);
+        }
+    }
+
     /**
      * @return OpenIDConnectClient
      */
@@ -100,7 +141,7 @@ class Client
         $oidc->authenticate();
 
         $this->setAccessToken($oidc->getAccessToken());
-        return $oidc->getRefreshToken();
+        $this->setRefreshToken($oidc->getRefreshToken());
     }
 
     public function isAccessTokenExpired($gracePeriod = 30)
@@ -113,15 +154,14 @@ class Client
         return time() > ($expiry - $gracePeriod);
     }
 
-    public function refreshToken(string $refreshToken)
+    public function refreshToken()
     {
         $oidc = $this->getOpenIDConnectClient();
-        $oidc->refreshToken($refreshToken);
+        $oidc->refreshToken($this->getRefreshToken());
         $this->setAccessToken($oidc->getAccessToken());
-        // return new refreshToken
-        return $oidc->getRefreshToken();
+        $this->setRefreshToken($oidc->getRefreshToken());
     }
-    
+
 
     protected function getRequest()
     {
