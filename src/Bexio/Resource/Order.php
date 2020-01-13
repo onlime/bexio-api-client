@@ -1,15 +1,16 @@
 <?php
 namespace Bexio\Resource;
 
-use Bexio\Bexio;
-use Bexio\Contract\ItemPosition;
+use Bexio\Resource\AbstractDocumentPositions;
 
 /**
  * Class Order
  * @package Bexio\Resource
  */
-class Order extends Bexio implements ItemPosition
+class Order extends AbstractDocumentPositions
 {
+    protected $documentType = 'kb_order';
+
     /**
      * Gets all orders
      *
@@ -109,68 +110,6 @@ class Order extends Bexio implements ItemPosition
     public function deleteRepetition(int $id)
     {
         return $this->client->delete("kb_order/$id/repetition");
-    }
-
-    /**
-     * @param int   $parentId
-     * @param array $params
-     * @return mixed
-     */
-    public function listItemPositions(int $parentId, array $params = [])
-    {
-        return $this->client->get("kb_order/$parentId/kb_position_article", $params);
-    }
-
-    /**
-     * @param int $parentId
-     * @param int $itemId
-     * @return mixed
-     */
-    public function showItemPosition(int $parentId, int $itemId)
-    {
-        return $this->client->get("kb_order/$parentId/kb_position_article/$itemId");
-    }
-
-    /**
-     * @param int $parentId
-     * @param array $params
-     * @return mixed
-     */
-    public function createItemPosition(int $parentId, array $params = [])
-    {
-        return $this->client->post("kb_order/$parentId/kb_position_article", $params);
-    }
-
-    /**
-     * @param int $parentId
-     * @param int $itemId
-     * @param array $params
-     * @return mixed
-     */
-    public function editItemPosition(int $parentId, int $itemId, array $params = [])
-    {
-        return $this->client->post("kb_order/$parentId/kb_position_article/$itemId", $params);
-    }
-
-    /**
-     * @param int $parentId
-     * @param int $itemId
-     * @param array $params
-     * @return mixed
-     */
-    public function overwriteItemPosition(int $parentId, int $itemId, array $params = [])
-    {
-        return $this->client->put("kb_order/$parentId/kb_position_article/$itemId", $params);
-    }
-
-    /**
-     * @param int $parentId
-     * @param int $itemId
-     * @return mixed
-     */
-    public function deleteItemPosition(int $parentId, int $itemId)
-    {
-        return $this->client->delete("kb_order/$parentId/kb_position_article/$itemId");
     }
 
     /**

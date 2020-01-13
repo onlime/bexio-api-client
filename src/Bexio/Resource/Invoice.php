@@ -1,14 +1,16 @@
 <?php
 namespace Bexio\Resource;
 
-use Bexio\Bexio;
+use Bexio\Resource\AbstractDocumentPositions;
 
 /**
  * Class Invoice
  * @package Bexio\Resource
  */
-class Invoice extends Bexio
+class Invoice extends AbstractDocumentPositions
 {
+    protected $documentType = 'kb_invoice';
+
     /**
      * Gets all orders
      *
@@ -38,7 +40,7 @@ class Invoice extends Bexio
      */
     public function getInvoice(int $id)
     {
-        return $this->client->get("kb_invoice/$id", []);
+        return $this->client->get("kb_invoice/$id");
     }
 
     /**
@@ -49,7 +51,7 @@ class Invoice extends Bexio
      */
     public function getPdf(int $id)
     {
-        return $this->client->get("kb_invoice/$id/pdf", []);
+        return $this->client->get("kb_invoice/$id/pdf");
     }
 
     /**
