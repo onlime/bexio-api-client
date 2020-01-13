@@ -2,12 +2,19 @@
 namespace Bexio;
 
 use Jumbojett\OpenIDConnectClient;
-use Curl\Curl;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 
 class Client
 {
     const PROVIDER_URL = 'https://idp.bexio.com';
     const API_URL = 'https://api.bexio.com/2.0';
+
+    const METHOD_GET = 'GET';
+    const METHOD_POST = 'POST';
+    const METHOD_PUT = 'PUT';
+    const METHOD_DELETE = 'DELETE';
+    const METHOD_PATCH = 'PATCH';
 
     /**
      * @var array $config
@@ -163,52 +170,44 @@ class Client
     }
 
 
-    protected function getRequest()
+    protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [])
     {
-        $curl = new Curl();
-        $curl->setHeader('Accept', 'application/json');
-        $curl->setHeader('Authorization', 'Bearer ' . $this->getAccessToken());
+        $apiUrl = self::API_URL . '/' . $path;
+        $options = [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+                'Accept' => 'application/json'
+            ],
+            'allow_redirects' => false
+        ];
+        if (!empty($data)) {
+            $options[(self::METHOD_GET == $method) ? 'query' : 'json'] = $data;
+        }
 
-        return $curl;
+        $client = new GuzzleClient();
+        $response = $client->request($method, $apiUrl, $options);
+        $body = $response->getBody();
+
+        return json_decode($body);
     }
 
-    public function get(string $path, array $parameters = [])
+    public function get(string $path, array $data = [])
     {
-        $request = $this->getRequest();
-        $request->get(self::API_URL.'/'.$path, $parameters);
-
-        return json_decode($request->response);
+        return $this->request($path, self::METHOD_GET, $data);
     }
 
-    public function post(string $path, array $parameters = [])
+    public function post(string $path, array $data = [])
     {
-        $request = $this->getRequest();
-        $request->post(self::API_URL.'/'.$path, json_encode($parameters));
-
-        return json_decode($request->response);
+        return $this->request($path, self::METHOD_POST, $data);
     }
 
-    public function postWithoutPayload(string $path)
+    public function put(string $path, array $data = [])
     {
-        $request = $this->getRequest();
-        $request->post(self::API_URL.'/'.$path);
-
-        return json_decode($request->response);
+        return $this->request($path, self::METHOD_PUT, $data);
     }
 
-    public function put(string $path, array $parameters = [])
+    public function delete(string $path, array $data = [])
     {
-        $request = $this->getRequest();
-        $request->put(self::API_URL.'/'.$path, $parameters);
-
-        return json_decode($request->response);
-    }
-
-    public function delete(string $path, array $parameters = [])
-    {
-        $request = $this->getRequest();
-        $request->delete(self::API_URL.'/'.$path, $parameters);
-
-        return json_decode($request->response);
+        return $this->request($path, self::METHOD_DELETE, $data);
     }
 }

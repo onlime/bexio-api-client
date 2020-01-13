@@ -129,7 +129,7 @@ class Order extends AbstractDocumentPositions
      */
     public function createInvoiceWithAllOpenPositions(int $id)
     {
-        return $this->client->postWithoutPayload("kb_order/$id/invoice");
+        return $this->client->post("kb_order/$id/invoice");
     }
 
     /**
