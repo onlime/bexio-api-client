@@ -8,7 +8,8 @@ use GuzzleHttp\Exception\ClientException;
 class Client
 {
     const PROVIDER_URL = 'https://idp.bexio.com';
-    const API_URL = 'https://api.bexio.com/2.0';
+    const API_URL = 'https://api.bexio.com';
+    const API_DEFAULT_VERSION = '2.0';
 
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
@@ -172,7 +173,13 @@ class Client
 
     protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [])
     {
-        $apiUrl = self::API_URL . '/' . $path;
+        // prefix path with default API version if there was no version provided
+        $apiUrl = implode('/', array_filter([
+            self::API_URL,
+            (1 === preg_match('/\d\.\d\//', $path)) ? '' : self::API_DEFAULT_VERSION,
+            $path
+        ]));
+
         $options = [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->getAccessToken(),
