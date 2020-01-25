@@ -204,4 +204,38 @@ class Invoice extends AbstractDocumentPositions
     {
         return $this->client->delete("kb_invoice/$id/payment/$paymentId");
     }
+
+    /**
+     * Create a new reminder for an invoice. Raises reminder_level by 1.
+     * 
+     * @param int $id
+     * @return mixed
+     */
+    public function createInvoiceReminder(int $id)
+    {
+        return $this->client->post("kb_invoice/$id/kb_reminder");
+    }
+
+    /**
+     * Fetches a list of all reminders for the invoice
+     *
+     * @param int $id
+     * @return mixed
+     */
+    public function getInvoiceReminders(int $id)
+    {
+        return $this->client->get("kb_invoice/$id/kb_reminder");
+    }
+
+    /**
+     * Get specific invoice reminder
+     *
+     * @param int $id
+     * @param int $reminderId
+     * @return mixed
+     */
+    public function getInvoiceReminder(int $id, int $reminderId)
+    {
+        return $this->client->get("kb_invoice/$id/kb_reminder/$reminderId");
+    }
 }

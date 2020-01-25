@@ -12,6 +12,7 @@ class Accounting extends Bexio
     /**
      * Fetch a list of accounts
      *
+     * @param array $params
      * @return mixed
      */
     public function getAccounts(array $params = [])
@@ -22,6 +23,7 @@ class Accounting extends Bexio
     /**
      * Fetch a list of taxes
      *
+     * @param array $params
      * @return mixed
      */
     public function getTaxes(array $params = [])
