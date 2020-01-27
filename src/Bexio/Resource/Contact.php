@@ -54,6 +54,17 @@ class Contact extends Bexio
     }
 
     /**
+     * Create multiple contacts in a single request
+     * 
+     * @param array $params
+     * @return mixed
+     */
+    public function bulkCreateContacts(array $params = [])
+    {
+        return $this->client->post('contact/_bulk_create', $params);
+    }
+
+    /**
      * Edit contact
      *
      * @param $id
