@@ -158,7 +158,7 @@ class Invoice extends AbstractDocumentPositions
     }
 
     /**
-     * Get specific invoice payments
+     * Fetches a list of all payments for the invoice
      *
      * @param int $id
      * @param array $params
@@ -194,7 +194,7 @@ class Invoice extends AbstractDocumentPositions
     }
 
     /**
-     * Celete a invoice payment
+     * Delete an invoice payment
      *
      * @param int $id
      * @param int $paymentId
@@ -203,17 +203,6 @@ class Invoice extends AbstractDocumentPositions
     public function deleteInvoicePayment(int $id, int $paymentId)
     {
         return $this->client->delete("kb_invoice/$id/payment/$paymentId");
-    }
-
-    /**
-     * Create a new reminder for an invoice. Raises reminder_level by 1.
-     * 
-     * @param int $id
-     * @return mixed
-     */
-    public function createInvoiceReminder(int $id)
-    {
-        return $this->client->post("kb_invoice/$id/kb_reminder");
     }
 
     /**
@@ -237,5 +226,28 @@ class Invoice extends AbstractDocumentPositions
     public function getInvoiceReminder(int $id, int $reminderId)
     {
         return $this->client->get("kb_invoice/$id/kb_reminder/$reminderId");
+    }
+
+    /**
+     * Create a new reminder for an invoice. Raises reminder_level by 1.
+     * 
+     * @param int $id
+     * @return mixed
+     */
+    public function createInvoiceReminder(int $id)
+    {
+        return $this->client->post("kb_invoice/$id/kb_reminder");
+    }
+
+    /**
+     * Delete an invoice reminder
+     *
+     * @param int $id
+     * @param int $reminderId
+     * @return mixed
+     */
+    public function deleteInvoiceReminder(int $id, int $reminderId)
+    {
+        return $this->client->delete("kb_invoice/$id/kb_reminder/$reminderId");
     }
 }
