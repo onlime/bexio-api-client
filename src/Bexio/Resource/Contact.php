@@ -73,7 +73,7 @@ class Contact extends Bexio
      */
     public function editContact(int $id, array $params = [])
     {
-        return $this->client->post("contact/$id", $params);
+        return $this->client->put("contact/$id", $params);
     }
 
     /**
