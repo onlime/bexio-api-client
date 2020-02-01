@@ -5,17 +5,11 @@ use Jumbojett\OpenIDConnectClient;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 
-class Client implements ClientInterface
+class Client extends AbstractClient
 {
     const PROVIDER_URL = 'https://idp.bexio.com';
     const API_URL = 'https://api.bexio.com';
     const API_DEFAULT_VERSION = '2.0';
-
-    const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST';
-    const METHOD_PUT = 'PUT';
-    const METHOD_DELETE = 'DELETE';
-    const METHOD_PATCH = 'PATCH';
 
     /**
      * @var array $config
@@ -196,25 +190,5 @@ class Client implements ClientInterface
         $body = $response->getBody();
 
         return json_decode($body);
-    }
-
-    public function get(string $path, array $data = [])
-    {
-        return $this->request($path, self::METHOD_GET, $data);
-    }
-
-    public function post(string $path, array $data = [])
-    {
-        return $this->request($path, self::METHOD_POST, $data);
-    }
-
-    public function put(string $path, array $data = [])
-    {
-        return $this->request($path, self::METHOD_PUT, $data);
-    }
-
-    public function delete(string $path, array $data = [])
-    {
-        return $this->request($path, self::METHOD_DELETE, $data);
     }
 }
