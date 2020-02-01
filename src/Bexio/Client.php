@@ -5,7 +5,7 @@ use Jumbojett\OpenIDConnectClient;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 
-class Client
+class Client implements ClientInterface
 {
     const PROVIDER_URL = 'https://idp.bexio.com';
     const API_URL = 'https://api.bexio.com';

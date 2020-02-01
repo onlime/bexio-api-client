@@ -4,11 +4,11 @@ namespace Bexio;
 class Bexio
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
-    public function __construct(Client $client)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
     }
