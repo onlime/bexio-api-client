@@ -62,7 +62,7 @@ class Note extends Bexio
      */
     public function editNote(int $id, array $params = [])
     {
-        return $this->client->post("note/$id", $params);
+        return $this->client->put("note/$id", $params);
     }
 
     /**

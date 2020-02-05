@@ -64,7 +64,7 @@ class Order extends AbstractDocumentPositions
      */
     public function editOrder(int $id, array $params = [])
     {
-        return $this->client->post("kb_order/$id", $params);
+        return $this->client->put("kb_order/$id", $params);
     }
 
     /**
