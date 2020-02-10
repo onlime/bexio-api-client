@@ -58,9 +58,9 @@ class LegacyClient extends AbstractClient
             $this->publicKey,
             $path
         ]);
-        
+
         if (!empty($queryParams)) {
-            $apiUrl .= http_build_query($queryParams);
+            $apiUrl .= '?' . http_build_query($queryParams);
         }
 
         $options = [
