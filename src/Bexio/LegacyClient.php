@@ -49,7 +49,7 @@ class LegacyClient extends AbstractClient
      * @param array $data
      * @return mixed
      */
-    protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [])
+    protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [], array $queryParams = [])
     {
         $apiUrl = implode('/', [
             self::API_URL,
@@ -58,6 +58,10 @@ class LegacyClient extends AbstractClient
             $this->publicKey,
             $path
         ]);
+        
+        if (!empty($queryParams)) {
+            $apiUrl .= http_build_query($queryParams);
+        }
 
         $options = [
             'headers' => [

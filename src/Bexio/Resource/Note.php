@@ -26,9 +26,9 @@ class Note extends Bexio
      * @param array $params
      * @return mixed
      */
-    public function searchNotes(array $params = [])
+    public function searchNotes(array $params = [], array $queryParams = [])
     {
-        return $this->client->post('note/search', $params);
+        return $this->client->post('note/search', $params, $queryParams);
     }
 
     /**

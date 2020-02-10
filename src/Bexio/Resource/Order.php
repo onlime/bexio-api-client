@@ -28,9 +28,9 @@ class Order extends AbstractDocumentPositions
      * @param array $params
      * @return mixed
      */
-    public function searchOrders(array $params = [])
+    public function searchOrders(array $params = [], array $queryParams = [])
     {
-        return $this->client->post('kb_order/search', $params);
+        return $this->client->post('kb_order/search', $params, $queryParams);
     }
 
     /**

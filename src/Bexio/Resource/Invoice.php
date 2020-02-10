@@ -27,9 +27,9 @@ class Invoice extends AbstractDocumentPositions
      * @param array $params
      * @return mixed
      */
-    public function searchInvoices(array $params = [])
+    public function searchInvoices(array $params = [], array $queryParams = [])
     {
-        return $this->client->post('kb_invoice/search', $params);
+        return $this->client->post('kb_invoice/search', $params, $queryParams);
     }
 
     /**

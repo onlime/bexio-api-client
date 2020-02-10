@@ -9,25 +9,25 @@ abstract class AbstractClient
     const METHOD_DELETE = 'DELETE';
     const METHOD_PATCH = 'PATCH';
 
-    abstract protected function request(string $path = '', string $method = self::METHOD_GET, array $data = []);
+    abstract protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [], array $queryParams = []);
 
-    public function get(string $path, array $data = [])
+    public function get(string $path, array $data = [], array $queryParams = [])
     {
-        return $this->request($path, self::METHOD_GET, $data);
+        return $this->request($path, self::METHOD_GET, $data, $queryParams);
     }
 
-    public function post(string $path, array $data = [])
+    public function post(string $path, array $data = [], array $queryParams = [])
     {
-        return $this->request($path, self::METHOD_POST, $data);
+        return $this->request($path, self::METHOD_POST, $data, $queryParams);
     }
 
-    public function put(string $path, array $data = [])
+    public function put(string $path, array $data = [], array $queryParams = [])
     {
-        return $this->request($path, self::METHOD_PUT, $data);
+        return $this->request($path, self::METHOD_PUT, $data, $queryParams);
     }
 
-    public function delete(string $path, array $data = [])
+    public function delete(string $path, array $data = [], array $queryParams = [])
     {
-        return $this->request($path, self::METHOD_DELETE, $data);
+        return $this->request($path, self::METHOD_DELETE, $data, $queryParams);
     }
 }

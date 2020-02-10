@@ -165,7 +165,7 @@ class Client extends AbstractClient
     }
 
 
-    protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [])
+    protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [], array $queryParams = [])
     {
         // prefix path with default API version if there was no version provided
         $apiUrl = implode('/', array_filter([
@@ -173,6 +173,10 @@ class Client extends AbstractClient
             (1 === preg_match('/\d\.\d\//', $path)) ? '' : self::API_DEFAULT_VERSION,
             $path
         ]));
+
+        if (!empty($queryParams)) {
+            $apiUrl .= http_build_query($queryParams);
+        }
 
         $options = [
             'headers' => [

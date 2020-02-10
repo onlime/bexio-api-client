@@ -26,9 +26,9 @@ class Item extends Bexio
      * @param array $params
      * @return mixed
      */
-    public function searchItems(array $params = [])
+    public function searchItems(array $params = [], array $queryParams = [])
     {
-        return $this->client->post('article/search', $params);
+        return $this->client->post('article/search', $params, $queryParams);
     }
 
     /**

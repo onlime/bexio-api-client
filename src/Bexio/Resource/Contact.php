@@ -26,7 +26,7 @@ class Contact extends Bexio
      * @param array $params
      * @return mixed
      */
-    public function searchContacts(array $params = [])
+    public function searchContacts(array $params = [], array $queryParams = [])
     {
         return $this->client->post('contact/search', $params);
     }
