@@ -25,6 +25,7 @@ class Invoice extends AbstractDocumentPositions
      * Search for invoices
      *
      * @param array $params
+     * @param array $queryParams
      * @return mixed
      */
     public function searchInvoices(array $params = [], array $queryParams = [])

@@ -24,6 +24,7 @@ class Contact extends Bexio
      * Search for contacts
      *
      * @param array $params
+     * @param array $queryParams
      * @return mixed
      */
     public function searchContacts(array $params = [], array $queryParams = [])

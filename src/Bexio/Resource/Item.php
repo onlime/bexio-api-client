@@ -24,6 +24,7 @@ class Item extends Bexio
      * Search for items
      *
      * @param array $params
+     * @param array $queryParams
      * @return mixed
      */
     public function searchItems(array $params = [], array $queryParams = [])

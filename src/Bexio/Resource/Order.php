@@ -26,6 +26,7 @@ class Order extends AbstractDocumentPositions
      * Search for orders
      *
      * @param array $params
+     * @param array $queryParams
      * @return mixed
      */
     public function searchOrders(array $params = [], array $queryParams = [])

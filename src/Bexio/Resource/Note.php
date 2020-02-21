@@ -24,6 +24,7 @@ class Note extends Bexio
      * Search for notes
      *
      * @param array $params
+     * @param array $queryParams
      * @return mixed
      */
     public function searchNotes(array $params = [], array $queryParams = [])
