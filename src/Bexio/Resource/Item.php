@@ -63,7 +63,7 @@ class Item extends Bexio
      */
     public function editItem(int $id, array $params = [])
     {
-        return $this->client->put("article/$id", $params);
+        return $this->client->post("article/$id", $params);
     }
 
     /**

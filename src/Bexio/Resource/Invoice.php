@@ -75,7 +75,7 @@ class Invoice extends AbstractDocumentPositions
      */
     public function editInvoice(int $id, array $params = [])
     {
-        return $this->client->put("kb_invoice/$id", $params);
+        return $this->client->post("kb_invoice/$id", $params);
     }
 
     /**
