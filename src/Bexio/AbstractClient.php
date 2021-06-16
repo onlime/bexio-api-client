@@ -30,4 +30,9 @@ abstract class AbstractClient
     {
         return $this->request($path, self::METHOD_DELETE, $data, $queryParams);
     }
+
+    public function patch(string $path, array $data = [], array $queryParams = [])
+    {
+        return $this->request($path, self::METHOD_PATCH, $data, $queryParams);
+    }
 }
