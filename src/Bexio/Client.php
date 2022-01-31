@@ -3,7 +3,6 @@ namespace Bexio;
 
 use Jumbojett\OpenIDConnectClient;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
 
 class Client extends AbstractClient
 {
@@ -31,14 +30,14 @@ class Client extends AbstractClient
      *
      * @param string $clientId
      * @param string $clientSecret
-     * @param string $redirectUrl
+     * @param string|null $redirectUrl
      */
     public function __construct(string $clientId, string $clientSecret, string $redirectUrl = null)
     {
         $this->config = [
             'clientId'     => $clientId,
             'clientSecret' => $clientSecret,
-            'redirectUrl'  => $redirectUrl
+            'redirectUrl'  => $redirectUrl,
         ];
     }
 
