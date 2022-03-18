@@ -1,16 +1,29 @@
 {
-    "name": "christianruhstaller/bexio-api-php-client",
-    "description": "Client library for bexio API",
+    "name": "onlime/bexio-api-client",
+    "description": "Client library for Bexio API",
+    "keywords": [
+        "onlime",
+        "bexio-api-client",
+        "bexio-api-php-client",
+        "bexio"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Philip Iezzi",
+            "email": "philip@onlime.ch"
+        },
         {
             "name": "Christian Ruhstaller",
             "email": "christian.ruhstaller@goldinteractive.ch"
         }
     ],
     "require": {
-        "curl/curl": "^1.6"
+        "php": "^8.0",
+        "ext-json": "*",
+        "jumbojett/openid-connect-php": "^0.9.5",
+        "guzzlehttp/guzzle": "^7.4"
     },
     "autoload": {
         "psr-4": {

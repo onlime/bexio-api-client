@@ -1,17 +1,15 @@
 <?php
-
 namespace Bexio\Resource;
 
-use Bexio\Bexio;
+use Bexio\Resource\AbstractDocumentPositions;
 
 /**
  * Class Invoice
- *
  * @package Bexio\Resource
- * https://docs.bexio.com/ressources/kb_invoice/
  */
-class Invoice extends Bexio
+class Invoice extends AbstractDocumentPositions
 {
+    protected $documentType = 'kb_invoice';
 
     /**
      * Gets all orders
@@ -27,33 +25,34 @@ class Invoice extends Bexio
      * Search for invoices
      *
      * @param array $params
+     * @param array $queryParams
      * @return mixed
      */
-    public function searchInvoices(array $params = [])
+    public function searchInvoices(array $params = [], array $queryParams = [])
     {
-        return $this->client->post('kb_invoice/search', $params);
+        return $this->client->post('kb_invoice/search', $params, $queryParams);
     }
 
     /**
      * Get specific invoice
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function getInvoice($id)
+    public function getInvoice(int $id)
     {
-        return $this->client->get('kb_invoice/'.$id, []);
+        return $this->client->get("kb_invoice/$id");
     }
 
     /**
      * Get specific invoice PDF
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function getPdf($id)
+    public function getPdf(int $id)
     {
-        return $this->client->get('kb_invoice/'.$id.'/pdf', []);
+        return $this->client->get("kb_invoice/$id/pdf");
     }
 
     /**
@@ -62,7 +61,7 @@ class Invoice extends Bexio
      * @param array $params
      * @return mixed
      */
-    public function createInvoice($params = [])
+    public function createInvoice(array $params = [])
     {
         return $this->client->post('kb_invoice', $params);
     }
@@ -70,139 +69,186 @@ class Invoice extends Bexio
     /**
      * Edit invoice
      *
-     * @param       $id
+     * @param int   $id
      * @param array $params
      * @return mixed
      */
-    public function editInvoice($id, $params = [])
+    public function editInvoice(int $id, array $params = [])
     {
-        return $this->client->post('kb_invoice/'.$id, $params);
+        return $this->client->post("kb_invoice/$id", $params);
     }
 
     /**
      * Delete invoice
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function deleteInvoice($id)
+    public function deleteInvoice(int $id)
     {
-        return $this->client->delete('kb_invoice/'.$id, []);
+        return $this->client->delete("kb_invoice/$id");
     }
 
     /**
      * Issue specific invoice
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function issueInvoice($id)
+    public function issueInvoice(int $id)
     {
-        return $this->client->post('kb_invoice/'.$id.'/issue', []);
+        return $this->client->post("kb_invoice/$id/issue");
     }
 
     /**
      * Send specific invoice
      *
-     * @param $id
+     * @param int $id
+     * @param array $params
      * @return mixed
      */
-    public function sendInvoice($id)
+    public function sendInvoice(int $id, array $params = [])
     {
-        return $this->client->post('kb_invoice/'.$id.'/send', []);
+        return $this->client->post("kb_invoice/$id/send", $params);
     }
 
     /**
      * Mark specific invoice as sent
-     *s
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function markInvoiceAsSent($id)
+    public function markInvoiceAsSent(int $id)
     {
-        return $this->client->post('kb_invoice/'.$id.'/mark_as_sent', []);
+        return $this->client->post("kb_invoice/$id/mark_as_sent");
     }
-
 
     /**
      * Get comments
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
-    public function getComments($id)
+    public function getComments(int $id)
     {
-        return $this->client->get('kb_invoice/'.$id.'/comment');
+        return $this->client->get("kb_invoice/$id/comment");
     }
 
     /**
      * Get specific comment
      *
-     * @param $id
-     * @param $commentId
+     * @param int $id
+     * @param int $commentId
      * @return mixed
      */
-    public function getComment($id, $commentId)
+    public function getComment(int $id, int $commentId)
     {
-        return $this->client->get('kb_invoice/'.$id.'/comment/'.$commentId);
+        return $this->client->get("kb_invoice/$id/comment/$commentId");
     }
 
     /**
      * Create comment
      *
-     * @param       $id
+     * @param int   $id
      * @param array $params
      * @return mixed
      */
-    public function createComment($id, $params = [])
+    public function createComment(int $id, array $params = [])
     {
-        return $this->client->post('kb_invoice/'.$id.'/comment', $params);
+        return $this->client->post("kb_invoice/$id/comment", $params);
     }
 
     /**
-     * Get specific invoice payments
+     * Fetches a list of all payments for the invoice
      *
-     * @param $id
+     * @param int $id
+     * @param array $params
      * @return mixed
      */
-    public function getInvoicePayments($id)
+    public function getInvoicePayments(int $id, array $params = [])
     {
-        return $this->client->get('kb_invoice/'.$id.'/payment', []);
+        return $this->client->get("kb_invoice/$id/payment", $params);
     }
 
     /**
      * Get specific invoice payment
      *
-     * @param $id
-     * @param $paymentId
+     * @param int $id
+     * @param int $paymentId
      * @return mixed
      */
-    public function getInvoicePayment($id, $paymentId)
+    public function getInvoicePayment(int $id, int $paymentId)
     {
-        return $this->client->get('kb_invoice/'.$id.'/payment/'.$paymentId, []);
+        return $this->client->get("kb_invoice/$id/payment/$paymentId");
     }
 
     /**
      * Create a new invoice payment
      *
+     * @param int $id
      * @param array $params
      * @return mixed
      */
-    public function createInvoicePayment($id, $params = [])
+    public function createInvoicePayment(int $id, array $params = [])
     {
-        return $this->client->post('kb_invoice/'.$id.'/payment', $params);
+        return $this->client->post("kb_invoice/$id/payment", $params);
     }
 
     /**
-     * Celete a invoice payment
+     * Delete an invoice payment
      *
-     * @param $id
-     * @param $paymentId
+     * @param int $id
+     * @param int $paymentId
      * @return mixed
      */
-    public function deleteInvoicePayment($id, $paymentId)
+    public function deleteInvoicePayment(int $id, int $paymentId)
     {
-        return $this->client->delete('kb_invoice/'.$id.'/payment/'.$paymentId, []);
+        return $this->client->delete("kb_invoice/$id/payment/$paymentId");
+    }
+
+    /**
+     * Fetches a list of all reminders for the invoice
+     *
+     * @param int $id
+     * @return mixed
+     */
+    public function getInvoiceReminders(int $id)
+    {
+        return $this->client->get("kb_invoice/$id/kb_reminder");
+    }
+
+    /**
+     * Get specific invoice reminder
+     *
+     * @param int $id
+     * @param int $reminderId
+     * @return mixed
+     */
+    public function getInvoiceReminder(int $id, int $reminderId)
+    {
+        return $this->client->get("kb_invoice/$id/kb_reminder/$reminderId");
+    }
+
+    /**
+     * Create a new reminder for an invoice. Raises reminder_level by 1.
+     * 
+     * @param int $id
+     * @return mixed
+     */
+    public function createInvoiceReminder(int $id)
+    {
+        return $this->client->post("kb_invoice/$id/kb_reminder");
+    }
+
+    /**
+     * Delete an invoice reminder
+     *
+     * @param int $id
+     * @param int $reminderId
+     * @return mixed
+     */
+    public function deleteInvoiceReminder(int $id, int $reminderId)
+    {
+        return $this->client->delete("kb_invoice/$id/kb_reminder/$reminderId");
     }
 }

@@ -1,16 +1,16 @@
 <?php
-
 namespace Bexio;
 
-use Bexio\Auth\OAuth2;
-use Curl\Curl;
+use Bexio\Exception\BexioClientException;
+use Jumbojett\OpenIDConnectClient;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Client as GuzzleClient;
 
-class Client
+class Client extends AbstractClient
 {
-    const API_URL = 'https://office.bexio.com/api2.php';
-    const OAUTH2_AUTH_URL = 'https://office.bexio.com/oauth/authorize';
-    const OAUTH2_TOKEN_URI = 'https://office.bexio.com/oauth/access_token';
-    const OAUTH2_REFRESH_TOKEN_URI = 'https://office.bexio.com/oauth/refresh_token';
+    const PROVIDER_URL = 'https://idp.bexio.com';
+    const API_URL = 'https://api.bexio.com';
+    const API_DEFAULT_VERSION = '2.0';
 
     /**
      * @var array $config
@@ -18,30 +18,29 @@ class Client
     private $config;
 
     /**
-     * @var
+     * @var string
      */
     private $accessToken;
 
     /**
-     * @var
+     * @var string
      */
-    private $auth;
+    private $refreshToken;
 
     /**
      * Client constructor.
      *
-     * @param array $config
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string|null $redirectUrl
      */
-    public function __construct(array $config = array())
+    public function __construct(string $clientId, string $clientSecret, string $redirectUrl = null)
     {
-        $this->config = array_merge(
-            [
-                'clientId'     => '',
-                'clientSecret' => '',
-                'redirectUri'  => null,
-            ],
-            $config
-        );
+        $this->config = [
+            'clientId'     => $clientId,
+            'clientSecret' => $clientSecret,
+            'redirectUrl'  => $redirectUrl,
+        ];
     }
 
     public function setClientId($clientId)
@@ -64,44 +63,18 @@ class Client
         return $this->config['clientSecret'];
     }
 
-    public function setRedirectUri($redirectUri)
+    public function setRedirectUrl($redirectUrl)
     {
-        $this->config['redirectUri'] = $redirectUri;
+        $this->config['redirectUrl'] = $redirectUrl;
     }
 
-    public function getRedirectUri()
+    public function getRedirectUrl()
     {
-        return $this->config['redirectUri'];
+        return $this->config['redirectUrl'];
     }
 
-    public function getOrg()
+    public function setAccessToken(string $accessToken)
     {
-        return $this->accessToken['org'];
-    }
-
-    /**
-     * @param $accessToken
-     * @throws \Exception
-     */
-    public function setAccessToken($accessToken)
-    {
-        if (is_string($accessToken)) {
-            if ($json = json_decode($accessToken, true)) {
-                $accessToken = $json;
-            } else {
-                $accessToken = [
-                    'access_token' => $accessToken,
-                ];
-            }
-        }
-
-        if ($accessToken == null) {
-            throw new \Exception('Invalid json token');
-        }
-
-        if (!isset($accessToken['access_token'])) {
-            throw new \Exception("Invalid token format");
-        }
         $this->accessToken = $accessToken;
     }
 
@@ -110,159 +83,121 @@ class Client
         return $this->accessToken;
     }
 
-    public function isAccessTokenExpired()
+    public function setRefreshToken(string $refreshToken)
     {
-        if (!$this->accessToken) {
-            return true;
-        }
-
-        $created = 0;
-        $expiresIn = 0;
-
-        if (isset($this->accessToken['created'])) {
-            $created = $this->accessToken['created'];
-        }
-
-        if (isset($this->accessToken['expires_in'])) {
-            $expiresIn = $this->accessToken['expires_in'];
-        }
-
-        return ($created + ($expiresIn - 30)) < time();
+        $this->refreshToken = $refreshToken;
     }
 
     public function getRefreshToken()
     {
-        if (isset($this->accessToken['refresh_token'])) {
-            return $this->accessToken['refresh_token'];
-        }
+        return $this->refreshToken;
     }
 
-    public function fetchAuthCode()
+    public function persistTokens(string $tokensFile)
     {
-        $auth = $this->getOAuth2Service();
-        $auth->setRedirectUri($this->getRedirectUri());
-
-
+        $result = file_put_contents($tokensFile, json_encode([
+            'accessToken' => $this->getAccessToken(),
+            'refreshToken' => $this->getRefreshToken()
+        ]));
+        return ($result !== false);
     }
 
-    public function fetchAccessTokenWithAuthCode($code)
+    public function loadTokens(string $tokensFile)
     {
-        if (strlen($code) === 0) {
-            throw new \Exception("Invalid code");
+        if (!file_exists($tokensFile)) {
+            throw new \Exception('Tokens file not found: ' . $tokensFile);
         }
+        $tokens = json_decode(file_get_contents($tokensFile));
 
-        $auth = $this->getOAuth2Service();
-        $auth->setCode($code);
-        $auth->setRedirectUri($this->getRedirectUri());
+        $this->setAccessToken($tokens->accessToken);
+        $this->setRefreshToken($tokens->refreshToken);
 
-        $credentials = $auth->fetchAuthToken();
-
-        if ($credentials && isset($credentials['access_token'])) {
-            $credentials['created'] = time();
-            $this->setAccessToken($credentials);
+        // Refresh access token if it is expired
+        if ($this->isAccessTokenExpired()) {
+            $this->refreshToken();
+            $this->persistTokens($tokensFile);
         }
-
-        return $credentials;
-    }
-
-    public function refreshToken($refreshToken = null)
-    {
-        if ($refreshToken === null) {
-            if (!isset($this->accessToken['refresh_token'])) {
-                throw new \Exception('Refresh token must be passed or set as part of the accessToken');
-            }
-
-            $refreshToken = $this->accessToken['refresh_token'];
-        }
-
-        $auth = $this->getOAuth2Service();
-        $auth->setRefreshToken($refreshToken);
-
-        $credentials = $auth->fetchAuthToken();
-
-        if ($credentials && isset($credentials['access_token'])) {
-            $credentials['created'] = time();
-            if (!isset($credentials['refresh_token'])) {
-                $credentials['refresh_token'] = $refreshToken;
-            }
-            $this->setAccessToken($credentials);
-
-            return $credentials;
-        }
-
-        throw new \Exception('Illegal access token received when token was refreshed');
     }
 
     /**
-     * @return OAuth2
+     * @return OpenIDConnectClient
      */
-    public function getOAuth2Service()
+    public function getOpenIDConnectClient()
     {
-        if (!isset($this->auth)) {
-            $this->auth = new OAuth2(
-                [
-                    'clientId'                  => $this->getClientId(),
-                    'clientSecret'              => $this->getClientSecret(),
-                    'authorizationUri'          => self::OAUTH2_AUTH_URL,
-                    'tokenCredentialUri'        => self::OAUTH2_TOKEN_URI,
-                    'refreshTokenCredentialUri' => self::OAUTH2_REFRESH_TOKEN_URI,
-                    'redirectUri'               => $this->getRedirectUri(),
-                    'issuer'                    => $this->config['clientId'],
-                ]
-            );
+        $oidc = new OpenIDConnectClient(
+            self::PROVIDER_URL, 
+            $this->getClientId(), 
+            $this->getClientSecret()
+        );
+        $oidc->setAccessToken($this->accessToken);
+        return $oidc;
+    }
+
+    public function authenticate($scopes)
+    {
+        if (!\is_array($scopes)) {
+            $scopes = \explode(' ', $scopes);
+        }
+        $oidc = $this->getOpenIDConnectClient();
+        $oidc->setRedirectURL($this->getRedirectUrl());
+        $oidc->addScope($scopes);
+        $oidc->authenticate();
+
+        $this->setAccessToken($oidc->getAccessToken());
+        $this->setRefreshToken($oidc->getRefreshToken());
+    }
+
+    public function isAccessTokenExpired($gracePeriod = 30)
+    {
+        if (!$this->accessToken) {
+            return true;
+        }
+        $payload = $this->getOpenIDConnectClient()->getAccessTokenPayload();
+        $expiry = $payload->exp ?? 0;
+        return time() > ($expiry - $gracePeriod);
+    }
+
+    public function refreshToken()
+    {
+        $oidc = $this->getOpenIDConnectClient();
+        $oidc->refreshToken($this->getRefreshToken());
+        $this->setAccessToken($oidc->getAccessToken());
+        $this->setRefreshToken($oidc->getRefreshToken());
+    }
+
+    protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [], array $queryParams = [])
+    {
+        // prefix path with default API version if there was no version provided
+        $apiUrl = implode('/', array_filter([
+            self::API_URL,
+            (1 === preg_match('/\d\.\d\//', $path)) ? '' : self::API_DEFAULT_VERSION,
+            $path
+        ]));
+
+        if (!empty($queryParams)) {
+            $apiUrl .= '?' . http_build_query($queryParams);
         }
 
-        return $this->auth;
-    }
+        $options = [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+                'Accept' => 'application/json'
+            ],
+            'allow_redirects' => false
+        ];
+        if (!empty($data)) {
+            $options[(self::METHOD_GET == $method) ? 'query' : 'json'] = $data;
+        }
 
-    protected function getRequest()
-    {
-        $accessToken = $this->getAccessToken();
+        $client = new GuzzleClient();
+        try {
+            $response = $client->request($method, $apiUrl, $options);
+        } catch (ClientException $e) {
+            // transform Guzzle ClientException into some more readable form, so that body content does not get truncated
+            $body = json_decode($e->getResponse()->getBody()->getContents());
+            throw new BexioClientException($body->message . ' ' . json_encode($body->errors), $body->error_code);
+        }
 
-        $curl = new Curl();
-        $curl->setHeader('Accept', 'application/json');
-        $curl->setHeader('Authorization', 'Bearer '.$accessToken['access_token']);
-
-        return $curl;
-    }
-
-    public function get($path, array $parameters = [])
-    {
-        $request = $this->getRequest();
-        $request->get(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
-
-        return json_decode($request->response);
-    }
-
-    public function post($path, array $parameters = [])
-    {
-        $request = $this->getRequest();
-        $request->post(self::API_URL.'/'.$this->getOrg().'/'.$path, json_encode($parameters));
-
-        return json_decode($request->response);
-    }
-
-    public function postWithoutPayload($path)
-    {
-        $request = $this->getRequest();
-        $request->post(self::API_URL.'/'.$this->getOrg().'/'.$path);
-
-        return json_decode($request->response);
-    }
-
-    public function put($path, array $parameters = [])
-    {
-        $request = $this->getRequest();
-        $request->put(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
-
-        return json_decode($request->response);
-    }
-
-    public function delete($path, array $parameters = [])
-    {
-        $request = $this->getRequest();
-        $request->delete(self::API_URL.'/'.$this->getOrg().'/'.$path, $parameters);
-
-        return json_decode($request->response);
+        return json_decode($response->getBody());
     }
 }
