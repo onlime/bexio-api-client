@@ -1,4 +1,4 @@
-# bexio API PHP Client
+# Bexio API PHP Client
 
 The bexio API Client Library enables you to work with the bexio API.
 This is an early version and is still in development.
@@ -12,7 +12,7 @@ You can use **Composer** or download the library.
 Require this package with composer:
 
 ```sh
-$ composer require christianruhstaller/bexio-api-php-client
+$ composer require onlime/bexio-api-client
 ```
 Include the autoloader:
 
@@ -75,3 +75,15 @@ use Bexio\Resource\Contact;
 $bexioContact = new Contact($client);
 $contacts = $bexioContact->getContacts();
 ```
+
+## Authors
+
+Author of this awesome package is [Philip Iezzi (Onlime GmbH)](https://www.onlime.ch/).
+
+Large parts of this package were ported from the original [christianruhstaller/bexio-api-php-client](https://github.com/christianruhstaller/bexio-api-php-client). Credits go to **[Christian Ruhstaller](http://marcin.nabialek.org/en/)**, the bolloon guy.
+
+This fork was detached from the original repository in March 2022, as the codebases have diverged quite a bit. Beware: Both projects currently don't represent a full-featured Bexio API client library, both being limited to just a subset of all API methods.
+
+## License
+
+This package is licenced under the [MIT license](LICENSE) however support is more than welcome.
