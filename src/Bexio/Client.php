@@ -1,7 +1,9 @@
 <?php
 namespace Bexio;
 
+use Bexio\Exception\BexioClientException;
 use Jumbojett\OpenIDConnectClient;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client as GuzzleClient;
 
 class Client extends AbstractClient
@@ -163,7 +165,6 @@ class Client extends AbstractClient
         $this->setRefreshToken($oidc->getRefreshToken());
     }
 
-
     protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [], array $queryParams = [])
     {
         // prefix path with default API version if there was no version provided
@@ -189,9 +190,14 @@ class Client extends AbstractClient
         }
 
         $client = new GuzzleClient();
-        $response = $client->request($method, $apiUrl, $options);
-        $body = $response->getBody();
+        try {
+            $response = $client->request($method, $apiUrl, $options);
+        } catch (ClientException $e) {
+            // transform Guzzle ClientException into some more readable form, so that body content does not get truncated
+            $body = json_decode($e->getResponse()->getBody()->getContents());
+            throw new BexioClientException($body->message . ' ' . json_encode($body->errors), $body->error_code);
+        }
 
-        return json_decode($body);
+        return json_decode($response->getBody());
     }
 }
