@@ -80,7 +80,7 @@ $contacts = $bexioContact->getContacts();
 
 Author of this awesome package is [Philip Iezzi (Onlime GmbH)](https://www.onlime.ch/).
 
-Large parts of this package were ported from the original [christianruhstaller/bexio-api-php-client](https://github.com/christianruhstaller/bexio-api-php-client). Credits go to **[Christian Ruhstaller](http://marcin.nabialek.org/en/)**, the bolloon guy.
+Large parts of this package were ported from the original [christianruhstaller/bexio-api-php-client](https://github.com/christianruhstaller/bexio-api-php-client). Credits go to [Christian Ruhstaller](https://github.com/christianruhstaller), the bolloon guy.
 
 This fork was detached from the original repository in March 2022, as the codebases have diverged quite a bit. Beware: Both projects currently don't represent a full-featured Bexio API client library, both being limited to just a subset of all API methods.
 

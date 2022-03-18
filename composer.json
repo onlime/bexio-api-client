@@ -1,9 +1,19 @@
 {
-    "name": "christianruhstaller/bexio-api-php-client",
-    "description": "Client library for bexio API",
+    "name": "onlime/bexio-api-client",
+    "description": "Client library for Bexio API",
+    "keywords": [
+        "onlime",
+        "bexio-api-client",
+        "bexio-api-php-client",
+        "bexio"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Philip Iezzi",
+            "email": "philip@onlime.ch"
+        },
         {
             "name": "Christian Ruhstaller",
             "email": "christian.ruhstaller@goldinteractive.ch"
