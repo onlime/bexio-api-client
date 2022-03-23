@@ -174,24 +174,24 @@ class Client extends AbstractClient
             $path
         ]));
 
-        if (!empty($queryParams)) {
-            $apiUrl .= '?' . http_build_query($queryParams);
-        }
-
         $options = [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->getAccessToken(),
-                'Accept' => 'application/json'
+                'Accept' => 'application/json',
             ],
-            'allow_redirects' => false
+            'allow_redirects' => false,
         ];
-        if (!empty($data)) {
-            $options[(self::METHOD_GET == $method) ? 'query' : 'json'] = $data;
+
+        if (!empty($queryParams)) {
+            $options['query'] = $queryParams;
         }
 
-        $client = new GuzzleClient();
+        if (!empty($data) && self::METHOD_GET !== $method) {
+            $options['json'] = $data;
+        }
+
         try {
-            $response = $client->request($method, $apiUrl, $options);
+            $response = (new GuzzleClient())->request($method, $apiUrl, $options);
         } catch (ClientException $e) {
             // transform Guzzle ClientException into some more readable form, so that body content does not get truncated
             $body = json_decode($e->getResponse()->getBody()->getContents());

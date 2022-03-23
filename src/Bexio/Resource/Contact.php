@@ -29,7 +29,7 @@ class Contact extends Bexio
      */
     public function searchContacts(array $params = [], array $queryParams = [])
     {
-        return $this->client->post('contact/search', $params);
+        return $this->client->post('contact/search', $params, $queryParams);
     }
 
     /**

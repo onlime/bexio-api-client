@@ -11,9 +11,9 @@ abstract class AbstractClient
 
     abstract protected function request(string $path = '', string $method = self::METHOD_GET, array $data = [], array $queryParams = []);
 
-    public function get(string $path, array $data = [], array $queryParams = [])
+    public function get(string $path, array $queryParams = [])
     {
-        return $this->request($path, self::METHOD_GET, $data, $queryParams);
+        return $this->request($path, self::METHOD_GET, queryParams: $queryParams);
     }
 
     public function post(string $path, array $data = [], array $queryParams = [])
