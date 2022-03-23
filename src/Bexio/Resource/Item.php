@@ -35,7 +35,7 @@ class Item extends Bexio
     /**
      * Get specific item
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function getItem(int $id)
@@ -57,7 +57,7 @@ class Item extends Bexio
     /**
      * Edit item
      *
-     * @param $id
+     * @param int $id
      * @param array $params
      * @return mixed
      */
@@ -69,7 +69,7 @@ class Item extends Bexio
     /**
      * Delete specific item
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function deleteItem(int $id)

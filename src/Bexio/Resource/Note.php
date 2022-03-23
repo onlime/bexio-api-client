@@ -35,7 +35,7 @@ class Note extends Bexio
     /**
      * Get specific note
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function getNote(int $id)
@@ -57,7 +57,7 @@ class Note extends Bexio
     /**
      * Edit note
      *
-     * @param $id
+     * @param int $id
      * @param array $params
      * @return mixed
      */
@@ -69,7 +69,7 @@ class Note extends Bexio
     /**
      * Delete specific note
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function deleteNote(int $id)

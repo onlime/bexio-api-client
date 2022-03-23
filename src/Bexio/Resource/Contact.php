@@ -35,7 +35,7 @@ class Contact extends Bexio
     /**
      * Get specific contact
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function getContact(int $id)
@@ -68,7 +68,7 @@ class Contact extends Bexio
     /**
      * Edit contact
      *
-     * @param $id
+     * @param int $id
      * @param array $params
      * @return mixed
      */
@@ -91,7 +91,7 @@ class Contact extends Bexio
     /**
      * Delete specific contact
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function deleteContact(int $id)

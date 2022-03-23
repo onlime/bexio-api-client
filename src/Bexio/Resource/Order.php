@@ -37,12 +37,12 @@ class Order extends AbstractDocumentPositions
     /**
      * Get specific order
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function getOrder(int $id)
     {
-        return $this->client->get("kb_order/$id", []);
+        return $this->client->get("kb_order/$id");
     }
 
     /**
@@ -59,7 +59,7 @@ class Order extends AbstractDocumentPositions
     /**
      * Edit order
      *
-     * @param $id
+     * @param int $id
      * @param array $params
      * @return mixed
      */
@@ -71,7 +71,7 @@ class Order extends AbstractDocumentPositions
     /**
      * Delete order
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function deleteOrder(int $id)
@@ -82,18 +82,18 @@ class Order extends AbstractDocumentPositions
     /**
      * Get repetition
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function getRepetition(int $id)
     {
-        return $this->client->get("kb_order/$id/repetition", []);
+        return $this->client->get("kb_order/$id/repetition");
     }
 
     /**
      * Create repetition
      *
-     * @param $id
+     * @param int $id
      * @param array $params
      * @return mixed
      */
@@ -105,7 +105,7 @@ class Order extends AbstractDocumentPositions
     /**
      * Delete repetition
      *
-     * @param $id
+     * @param int $id
      * @return mixed
      */
     public function deleteRepetition(int $id)
@@ -125,7 +125,6 @@ class Order extends AbstractDocumentPositions
 
     /**
      * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function createInvoiceWithAllOpenPositions(int $id)
