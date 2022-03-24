@@ -3,6 +3,7 @@
 ## [0.3.x (Unreleased)](https://github.com/onlime/bexio-api-client/compare/0.3.1...main)
 
 - Fix release comparison links in CHANGELOG.
+- Refactored most `Client` methods into `AbstractClient` for better extensibility.
 
 ## [0.3.1 (2022-03-23)](https://github.com/onlime/bexio-api-client/compare/0.3.0...0.3.1)
 
