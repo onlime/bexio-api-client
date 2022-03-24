@@ -2,6 +2,9 @@
 
 ## [0.4.x (Unreleased)](https://github.com/onlime/bexio-api-client/compare/0.3.1...main)
 
+
+## [0.4.1 (2022-03-24)](https://github.com/onlime/bexio-api-client/compare/0.4.0...0.4.1)
+
 - Extended `getFullApiUrl()` to optionally append query params.
 - Added `onlime/laravel-bexio-api-client` to suggested packages to use this library with Laravel HTTP Client instead of Guzzle.
 
