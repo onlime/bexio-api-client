@@ -1,9 +1,12 @@
 # CHANGELOG
 
-## [0.3.x (Unreleased)](https://github.com/onlime/bexio-api-client/compare/0.3.1...main)
+## [0.4.x (Unreleased)](https://github.com/onlime/bexio-api-client/compare/0.3.1...main)
+
+## [0.4.0 (2022-03-24)](https://github.com/onlime/bexio-api-client/compare/0.3.1...0.4.0)
 
 - Fix release comparison links in CHANGELOG.
 - Refactored most `Client` methods into `AbstractClient` for better extensibility.
+- BC break: The redirect URL does now need to be passed as second argument of the `Client::authenticate($scopes, $redirectUrl)` method, no longer as constructor argument.
 
 ## [0.3.1 (2022-03-23)](https://github.com/onlime/bexio-api-client/compare/0.3.0...0.3.1)
 

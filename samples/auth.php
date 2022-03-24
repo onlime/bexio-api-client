@@ -12,12 +12,12 @@ use Bexio\Client;
  */
 $clientId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 $clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-$redirectUrl = 'http://bexio-api-php-client.test/auth.php';
+$redirectUrl = 'http://localhost:8000/auth.php';
 $scopes = ['openid', 'profile', 'contact_edit', 'offline_access', 'kb_invoice_edit', 'bank_payment_edit'];
 $tokensFile = 'client_tokens.json';
 
-$client = new Client($clientId, $clientSecret, $redirectUrl);
-$client->authenticate($scopes);
+$client = new Client($clientId, $clientSecret);
+$client->authenticate($scopes, $redirectUrl);
 $client->persistTokens($tokensFile);
 ?>
 Sucessfully authenticated. <a href="sample.php">Proceed to sample.php</a>

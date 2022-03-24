@@ -41,12 +41,12 @@ use Bexio\Client;
  */
 $clientId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 $clientSecret = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-$redirectUrl = 'http://bexio-api-php-client.test/auth.php';
+$redirectUrl = 'http://localhost:8000/auth.php';
 $scopes = ['openid', 'profile', 'contact_edit', 'offline_access', 'kb_invoice_edit', 'bank_payment_edit'];
 $tokensFile = 'client_tokens.json';
 
-$client = new Client($clientId, $clientSecret, $redirectUrl);
-$client->authenticate($scopes);
+$client = new Client($clientId, $clientSecret);
+$client->authenticate($scopes, $redirectUrl);
 $client->persistTokens($tokensFile);
 ```
 
@@ -74,6 +74,21 @@ use Bexio\Resource\Contact;
 
 $bexioContact = new Contact($client);
 $contacts = $bexioContact->getContacts();
+```
+
+Usage:
+
+1. Ensure you have allowed your local direct URL in [Bexio Developer Portal](https://developer.bexio.com/), e.g. `http://localhost:8000/auth.php`
+2. Fill `$clientId` and `$clientSecret` in both `samples/auth.php` and `samples/sample.php` with your Bexio API credentials.
+3. Fire up the local dev server (see below).
+4. Access http://localhost:8000/auth.php in your browser.
+5. Authenticate with your Bexio login to provide access to the app via access token.
+6. Bexio will redirect you back to http://localhost:8000/auth.php which will present: **Sucessfully authenticated. [Proceed to sample.php](http://localhost:8000/auth.php)**
+7. Once you access http://localhost:8000/sample.php, you should be already authenticated (using the current token stored in `client_tokens.json`) and your contacts are listed.
+
+```bash
+$ cd samples/
+$ php -S localhost:8000
 ```
 
 ## Authors

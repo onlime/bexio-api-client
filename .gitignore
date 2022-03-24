@@ -3,3 +3,4 @@ vendor
 composer.lock
 
 samples/client_tokens.json
+playground/*

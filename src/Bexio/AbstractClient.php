@@ -15,62 +15,20 @@ abstract class AbstractClient
     const METHOD_DELETE = 'DELETE';
     const METHOD_PATCH = 'PATCH';
 
-    private array $config;
-    private string $accessToken;
-    private string $refreshToken;
+    private ?string $accessToken = null;
+    private ?string $refreshToken = null;
 
-    /**
-     * Client constructor.
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string|null $redirectUrl
-     */
-    public function __construct(string $clientId, string $clientSecret, string $redirectUrl = null)
-    {
-        $this->config = [
-            'clientId'     => $clientId,
-            'clientSecret' => $clientSecret,
-            'redirectUrl'  => $redirectUrl,
-        ];
-    }
-
-    public function setClientId($clientId)
-    {
-        $this->config['clientId'] = $clientId;
-    }
-
-    public function getClientId()
-    {
-        return $this->config['clientId'];
-    }
-
-    public function setClientSecret($clientId)
-    {
-        $this->config['clientSecret'] = $clientId;
-    }
-
-    public function getClientSecret()
-    {
-        return $this->config['clientSecret'];
-    }
-
-    public function setRedirectUrl($redirectUrl)
-    {
-        $this->config['redirectUrl'] = $redirectUrl;
-    }
-
-    public function getRedirectUrl()
-    {
-        return $this->config['redirectUrl'];
-    }
+    public function __construct(
+        public string $clientId,
+        public string $clientSecret
+    ) {}
 
     public function setAccessToken(string $accessToken)
     {
         $this->accessToken = $accessToken;
     }
 
-    public function getAccessToken()
+    public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
@@ -80,7 +38,7 @@ abstract class AbstractClient
         $this->refreshToken = $refreshToken;
     }
 
-    public function getRefreshToken()
+    public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }
@@ -114,20 +72,21 @@ abstract class AbstractClient
     {
         $oidc = new OpenIDConnectClient(
             self::PROVIDER_URL,
-            $this->getClientId(),
-            $this->getClientSecret()
+            $this->clientId,
+            $this->clientSecret
         );
         $oidc->setAccessToken($this->accessToken);
         return $oidc;
     }
 
-    public function authenticate($scopes)
+    public function authenticate(string|array $scopes, string $redirectUrl)
     {
         if (!is_array($scopes)) {
             $scopes = explode(' ', $scopes);
         }
+
         $oidc = $this->getOpenIDConnectClient();
-        $oidc->setRedirectURL($this->getRedirectUrl());
+        $oidc->setRedirectURL($redirectUrl);
         $oidc->addScope($scopes);
         $oidc->authenticate();
 
@@ -163,35 +122,9 @@ abstract class AbstractClient
         ]));
     }
 
-    public function get(string $path, array $queryParams = [])
-    {
-        return $this->request($path, self::METHOD_GET, queryParams: $queryParams);
-    }
-
-    public function post(string $path, array $data = [], array $queryParams = [])
-    {
-        return $this->request($path, self::METHOD_POST, $data, $queryParams);
-    }
-
-    public function put(string $path, array $data = [], array $queryParams = [])
-    {
-        return $this->request($path, self::METHOD_PUT, $data, $queryParams);
-    }
-
-    public function delete(string $path, array $data = [], array $queryParams = [])
-    {
-        return $this->request($path, self::METHOD_DELETE, $data, $queryParams);
-    }
-
-    public function patch(string $path, array $data = [], array $queryParams = [])
-    {
-        return $this->request($path, self::METHOD_PATCH, $data, $queryParams);
-    }
-
-    abstract protected function request(
-        string $path = '',
-        string $method = self::METHOD_GET,
-        array $data = [],
-        array $queryParams = []
-    );
+    abstract public function get(string $path, array $queryParams = []);
+    abstract public function post(string $path, array $data = [], array $queryParams = []);
+    abstract public function put(string $path, array $data = [], array $queryParams = []);
+    abstract public function delete(string $path, array $data = [], array $queryParams = []);
+    abstract public function patch(string $path, array $data = [], array $queryParams = []);
 }
