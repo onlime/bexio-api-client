@@ -25,6 +25,9 @@
         "jumbojett/openid-connect-php": "^0.9.5",
         "guzzlehttp/guzzle": "^7.4"
     },
+    "suggest": {
+        "onlime/laravel-bexio-api-client": "To use Laravel HTTP Client instead of Guzzle"
+    },
     "autoload": {
         "psr-4": {
             "Bexio\\": "src/Bexio"

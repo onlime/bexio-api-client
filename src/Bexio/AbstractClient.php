@@ -112,13 +112,13 @@ abstract class AbstractClient
         $this->setRefreshToken($oidc->getRefreshToken());
     }
 
-    public function getFullApiUrl(string $path = '')
+    public function getFullApiUrl(string $path = '', array $query = []): string
     {
         // prefix path with default API version if there was no version provided
         return implode('/', array_filter([
             self::API_URL,
             1 === preg_match('/\d\.\d\//', $path) ? '' : self::API_DEFAULT_VERSION,
-            $path
+            empty($query) ? $path : $path . '?' . http_build_query($query)
         ]));
     }
 
