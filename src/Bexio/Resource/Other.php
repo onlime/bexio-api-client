@@ -10,6 +10,27 @@ use Bexio\Bexio;
 class Other extends Bexio
 {
     /**
+     * Fetch a list of company profiles
+     *
+     * @return array
+     */
+    public function getCompanyProfiles()
+    {
+        return $this->client->get('company_profile');
+    }
+
+    /**
+     * Get company profile
+     *
+     * @param int $id
+     * @return mixed
+     */
+    public function getCompanyProfile(int $id)
+    {
+        return $this->client->get("company_profile/$id");
+    }
+
+    /**
      * Get available countries
      *
      * @return mixed
