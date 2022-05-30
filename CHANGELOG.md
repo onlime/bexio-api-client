@@ -3,6 +3,8 @@
 ## [0.4.x (Unreleased)](https://github.com/onlime/bexio-api-client/compare/0.3.1...main)
 
 - Added Bexio company profile endpoint request methods to `Other` resource.
+- Create `Banking` resource with bank account methods.
+- Added fetch users endpoint request method to `Other` resource.
 
 ## [0.4.1 (2022-03-24)](https://github.com/onlime/bexio-api-client/compare/0.4.0...0.4.1)
 

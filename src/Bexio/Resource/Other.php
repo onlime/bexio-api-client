@@ -69,4 +69,14 @@ class Other extends Bexio
     {
         return $this->client->get('unit', $params);
     }
+
+    /**
+     * Fetch a list of users
+     *
+     * @link https://docs.bexio.com/#tag/User-Management/operation/v3ListUsers
+     */
+    public function getUsers(array $params = []): array
+    {
+        return is_array($result = $this->client->get('3.0/users', $params)) ? $result : [];
+    }
 }
