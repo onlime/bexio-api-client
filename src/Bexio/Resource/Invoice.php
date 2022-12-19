@@ -1,11 +1,11 @@
 <?php
+
 namespace Bexio\Resource;
 
 use Bexio\Resource\AbstractDocumentPositions;
 
 /**
  * Class Invoice
- * @package Bexio\Resource
  */
 class Invoice extends AbstractDocumentPositions
 {
@@ -231,7 +231,7 @@ class Invoice extends AbstractDocumentPositions
 
     /**
      * Create a new reminder for an invoice. Raises reminder_level by 1.
-     * 
+     *
      * @param int $id
      * @return mixed
      */

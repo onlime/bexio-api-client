@@ -1,11 +1,11 @@
 <?php
+
 namespace Bexio\Resource;
 
 use Bexio\Resource\AbstractDocumentPositions;
 
 /**
  * Class Order
- * @package Bexio\Resource
  */
 class Order extends AbstractDocumentPositions
 {
@@ -47,7 +47,7 @@ class Order extends AbstractDocumentPositions
 
     /**
      * Add new order
-     * 
+     *
      * @param array $params
      * @return mixed
      */

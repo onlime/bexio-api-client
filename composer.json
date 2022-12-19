@@ -20,10 +20,13 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
-        "jumbojett/openid-connect-php": "^0.9.5",
-        "guzzlehttp/guzzle": "^7.4"
+        "jumbojett/openid-connect-php": "^0.9.10",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.2"
     },
     "suggest": {
         "onlime/laravel-bexio-api-client": "To use Laravel HTTP Client instead of Guzzle"

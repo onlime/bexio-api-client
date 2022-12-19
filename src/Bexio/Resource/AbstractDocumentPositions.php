@@ -1,11 +1,11 @@
 <?php
+
 namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
 /**
  * Class Invoice
- * @package Bexio\Resource
  */
 abstract class AbstractDocumentPositions extends Bexio
 {
@@ -73,7 +73,6 @@ abstract class AbstractDocumentPositions extends Bexio
         return $this->client->delete($this->documentType . "/$documentId/kb_position_custom/$itemId");
     }
 
-
     /**
      * @param int   $documentId
      * @param array $params
@@ -135,7 +134,6 @@ abstract class AbstractDocumentPositions extends Bexio
     {
         return $this->client->delete($this->documentType . "/$documentId/kb_position_article/$itemId");
     }
-
 
     /**
      * @param int   $documentId

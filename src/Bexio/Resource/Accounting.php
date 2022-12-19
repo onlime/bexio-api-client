@@ -1,11 +1,11 @@
 <?php
+
 namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
 /**
  * Class Other
- * @package Bexio\Resource
  */
 class Accounting extends Bexio
 {

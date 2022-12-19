@@ -1,11 +1,11 @@
 <?php
+
 namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
 /**
  * Class Contact
- * @package Bexio\Resource
  */
 class Contact extends Bexio
 {
@@ -45,7 +45,7 @@ class Contact extends Bexio
 
     /**
      * Add new contact
-     * 
+     *
      * @param array $params
      * @return mixed
      */
@@ -56,7 +56,7 @@ class Contact extends Bexio
 
     /**
      * Create multiple contacts in a single request
-     * 
+     *
      * @param array $params
      * @return mixed
      */

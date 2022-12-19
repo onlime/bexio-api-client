@@ -1,15 +1,15 @@
 <?php
+
 namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
 /**
  * Class Note
- * @package Bexio\Resource
  */
 class Note extends Bexio
 {
-   /**
+    /**
      * Gets all Notes
      *
      * @param array $params
@@ -45,7 +45,7 @@ class Note extends Bexio
 
     /**
      * Add new note
-     * 
+     *
      * @param array $params
      * @return mixed
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace Bexio\Exception;
 
 use Exception;

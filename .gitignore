@@ -1,6 +1,5 @@
-~*
-vendor
+/vendor
+/samples/client_tokens.json
+/playground/*
 composer.lock
-
-samples/client_tokens.json
-playground/*
+.pint.cache.json

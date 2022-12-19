@@ -1,9 +1,10 @@
 <?php
+
 namespace Bexio;
 
 use Bexio\Exception\BexioClientException;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 
 class Client extends AbstractClient
 {
@@ -46,11 +47,11 @@ class Client extends AbstractClient
             'allow_redirects' => false,
         ];
 
-        if (!empty($queryParams)) {
+        if (! empty($queryParams)) {
             $options['query'] = $queryParams;
         }
 
-        if (!empty($data) && self::METHOD_GET !== $method) {
+        if (! empty($data) && self::METHOD_GET !== $method) {
             $options['json'] = $data;
         }
 
