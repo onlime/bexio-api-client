@@ -22,7 +22,6 @@ class Other extends Bexio
     /**
      * Get company profile
      *
-     * @param int $id
      * @return mixed
      */
     public function getCompanyProfile(int $id)

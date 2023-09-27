@@ -12,7 +12,6 @@ class Contact extends Bexio
     /**
      * Gets all the contacts
      *
-     * @param array $params
      * @return array
      */
     public function getContacts(array $params = [])
@@ -23,8 +22,6 @@ class Contact extends Bexio
     /**
      * Search for contacts
      *
-     * @param array $params
-     * @param array $queryParams
      * @return mixed
      */
     public function searchContacts(array $params = [], array $queryParams = [])
@@ -35,7 +32,6 @@ class Contact extends Bexio
     /**
      * Get specific contact
      *
-     * @param int $id
      * @return mixed
      */
     public function getContact(int $id)
@@ -46,7 +42,6 @@ class Contact extends Bexio
     /**
      * Add new contact
      *
-     * @param array $params
      * @return mixed
      */
     public function createContact(array $params = [])
@@ -57,7 +52,6 @@ class Contact extends Bexio
     /**
      * Create multiple contacts in a single request
      *
-     * @param array $params
      * @return mixed
      */
     public function bulkCreateContacts(array $params = [])
@@ -68,8 +62,6 @@ class Contact extends Bexio
     /**
      * Edit contact
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function editContact(int $id, array $params = [])
@@ -80,7 +72,6 @@ class Contact extends Bexio
     /**
      * Get relations from contacts
      *
-     * @param array $params
      * @return mixed
      */
     public function getContactsRelations(array $params = [])
@@ -91,7 +82,6 @@ class Contact extends Bexio
     /**
      * Delete specific contact
      *
-     * @param int $id
      * @return mixed
      */
     public function deleteContact(int $id)

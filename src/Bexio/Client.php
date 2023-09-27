@@ -41,7 +41,7 @@ class Client extends AbstractClient
     ) {
         $options = [
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+                'Authorization' => 'Bearer '.$this->getAccessToken(),
                 'Accept' => 'application/json',
             ],
             'allow_redirects' => false,
@@ -51,7 +51,7 @@ class Client extends AbstractClient
             $options['query'] = $queryParams;
         }
 
-        if (! empty($data) && self::METHOD_GET !== $method) {
+        if (! empty($data) && $method !== self::METHOD_GET) {
             $options['json'] = $data;
         }
 
@@ -60,7 +60,7 @@ class Client extends AbstractClient
         } catch (ClientException $e) {
             // transform Guzzle ClientException into some more readable form, so that body content does not get truncated
             $body = json_decode($e->getResponse()->getBody()->getContents());
-            throw new BexioClientException($body->message . ' ' . json_encode($body->errors), $body->error_code);
+            throw new BexioClientException($body->message.' '.json_encode($body->errors), $body->error_code);
         }
 
         return json_decode($response->getBody());

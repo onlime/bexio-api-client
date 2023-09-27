@@ -12,7 +12,6 @@ class Note extends Bexio
     /**
      * Gets all Notes
      *
-     * @param array $params
      * @return array
      */
     public function getNotes(array $params = [])
@@ -23,8 +22,6 @@ class Note extends Bexio
     /**
      * Search for notes
      *
-     * @param array $params
-     * @param array $queryParams
      * @return mixed
      */
     public function searchNotes(array $params = [], array $queryParams = [])
@@ -35,7 +32,6 @@ class Note extends Bexio
     /**
      * Get specific note
      *
-     * @param int $id
      * @return mixed
      */
     public function getNote(int $id)
@@ -46,7 +42,6 @@ class Note extends Bexio
     /**
      * Add new note
      *
-     * @param array $params
      * @return mixed
      */
     public function createNote(array $params = [])
@@ -57,8 +52,6 @@ class Note extends Bexio
     /**
      * Edit note
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function editNote(int $id, array $params = [])
@@ -69,7 +62,6 @@ class Note extends Bexio
     /**
      * Delete specific note
      *
-     * @param int $id
      * @return mixed
      */
     public function deleteNote(int $id)

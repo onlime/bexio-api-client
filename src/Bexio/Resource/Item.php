@@ -12,7 +12,6 @@ class Item extends Bexio
     /**
      * Gets all items
      *
-     * @param array $params
      * @return array
      */
     public function getItems(array $params = [])
@@ -23,8 +22,6 @@ class Item extends Bexio
     /**
      * Search for items
      *
-     * @param array $params
-     * @param array $queryParams
      * @return mixed
      */
     public function searchItems(array $params = [], array $queryParams = [])
@@ -35,7 +32,6 @@ class Item extends Bexio
     /**
      * Get specific item
      *
-     * @param int $id
      * @return mixed
      */
     public function getItem(int $id)
@@ -46,7 +42,6 @@ class Item extends Bexio
     /**
      * Add new item
      *
-     * @param array $params
      * @return mixed
      */
     public function createItem(array $params = [])
@@ -57,8 +52,6 @@ class Item extends Bexio
     /**
      * Edit item
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function editItem(int $id, array $params = [])
@@ -69,7 +62,6 @@ class Item extends Bexio
     /**
      * Delete specific item
      *
-     * @param int $id
      * @return mixed
      */
     public function deleteItem(int $id)

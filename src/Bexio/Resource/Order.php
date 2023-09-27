@@ -2,8 +2,6 @@
 
 namespace Bexio\Resource;
 
-use Bexio\Resource\AbstractDocumentPositions;
-
 /**
  * Class Order
  */
@@ -14,7 +12,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Gets all orders
      *
-     * @param array $params
      * @return array
      */
     public function getOrders(array $params = [])
@@ -25,8 +22,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Search for orders
      *
-     * @param array $params
-     * @param array $queryParams
      * @return mixed
      */
     public function searchOrders(array $params = [], array $queryParams = [])
@@ -37,7 +32,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Get specific order
      *
-     * @param int $id
      * @return mixed
      */
     public function getOrder(int $id)
@@ -48,7 +42,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Add new order
      *
-     * @param array $params
      * @return mixed
      */
     public function createOrder(array $params = [])
@@ -59,8 +52,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Edit order
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function editOrder(int $id, array $params = [])
@@ -71,7 +62,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Delete order
      *
-     * @param int $id
      * @return mixed
      */
     public function deleteOrder(int $id)
@@ -82,7 +72,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Get repetition
      *
-     * @param int $id
      * @return mixed
      */
     public function getRepetition(int $id)
@@ -93,8 +82,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Create repetition
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function createRepetition(int $id, array $params = [])
@@ -105,7 +92,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Delete repetition
      *
-     * @param int $id
      * @return mixed
      */
     public function deleteRepetition(int $id)
@@ -114,8 +100,6 @@ class Order extends AbstractDocumentPositions
     }
 
     /**
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function createInvoice(int $id, array $params = [])
@@ -124,7 +108,6 @@ class Order extends AbstractDocumentPositions
     }
 
     /**
-     * @param int $id
      * @return mixed
      */
     public function createInvoiceWithAllOpenPositions(int $id)
@@ -135,7 +118,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Get specific order PDF
      *
-     * @param int $id
      * @return mixed
      */
     public function getPdf(int $id)
@@ -146,7 +128,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Get comments
      *
-     * @param int $id
      * @return mixed
      */
     public function getComments(int $id)
@@ -157,8 +138,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Get specific comment
      *
-     * @param int $id
-     * @param int $commentId
      * @return mixed
      */
     public function getComment(int $id, int $commentId)
@@ -169,8 +148,6 @@ class Order extends AbstractDocumentPositions
     /**
      * Create comment
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function createComment(int $id, array $params = [])

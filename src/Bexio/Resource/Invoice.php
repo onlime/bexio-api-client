@@ -2,8 +2,6 @@
 
 namespace Bexio\Resource;
 
-use Bexio\Resource\AbstractDocumentPositions;
-
 /**
  * Class Invoice
  */
@@ -24,8 +22,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Search for invoices
      *
-     * @param array $params
-     * @param array $queryParams
      * @return mixed
      */
     public function searchInvoices(array $params = [], array $queryParams = [])
@@ -36,7 +32,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Get specific invoice
      *
-     * @param int $id
      * @return mixed
      */
     public function getInvoice(int $id)
@@ -47,7 +42,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Get specific invoice PDF
      *
-     * @param int $id
      * @return mixed
      */
     public function getPdf(int $id)
@@ -58,7 +52,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Add new invoice
      *
-     * @param array $params
      * @return mixed
      */
     public function createInvoice(array $params = [])
@@ -69,8 +62,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Edit invoice
      *
-     * @param int   $id
-     * @param array $params
      * @return mixed
      */
     public function editInvoice(int $id, array $params = [])
@@ -81,7 +72,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Delete invoice
      *
-     * @param int $id
      * @return mixed
      */
     public function deleteInvoice(int $id)
@@ -92,7 +82,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Issue specific invoice
      *
-     * @param int $id
      * @return mixed
      */
     public function issueInvoice(int $id)
@@ -103,8 +92,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Send specific invoice
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function sendInvoice(int $id, array $params = [])
@@ -115,7 +102,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Mark specific invoice as sent
      *
-     * @param int $id
      * @return mixed
      */
     public function markInvoiceAsSent(int $id)
@@ -126,7 +112,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Get comments
      *
-     * @param int $id
      * @return mixed
      */
     public function getComments(int $id)
@@ -137,8 +122,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Get specific comment
      *
-     * @param int $id
-     * @param int $commentId
      * @return mixed
      */
     public function getComment(int $id, int $commentId)
@@ -149,8 +132,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Create comment
      *
-     * @param int   $id
-     * @param array $params
      * @return mixed
      */
     public function createComment(int $id, array $params = [])
@@ -161,8 +142,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Fetches a list of all payments for the invoice
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function getInvoicePayments(int $id, array $params = [])
@@ -173,8 +152,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Get specific invoice payment
      *
-     * @param int $id
-     * @param int $paymentId
      * @return mixed
      */
     public function getInvoicePayment(int $id, int $paymentId)
@@ -185,8 +162,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Create a new invoice payment
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function createInvoicePayment(int $id, array $params = [])
@@ -197,8 +172,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Delete an invoice payment
      *
-     * @param int $id
-     * @param int $paymentId
      * @return mixed
      */
     public function deleteInvoicePayment(int $id, int $paymentId)
@@ -209,7 +182,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Fetches a list of all reminders for the invoice
      *
-     * @param int $id
      * @return mixed
      */
     public function getInvoiceReminders(int $id)
@@ -220,8 +192,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Get specific invoice reminder
      *
-     * @param int $id
-     * @param int $reminderId
      * @return mixed
      */
     public function getInvoiceReminder(int $id, int $reminderId)
@@ -232,7 +202,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Create a new reminder for an invoice. Raises reminder_level by 1.
      *
-     * @param int $id
      * @return mixed
      */
     public function createInvoiceReminder(int $id)
@@ -243,8 +212,6 @@ class Invoice extends AbstractDocumentPositions
     /**
      * Delete an invoice reminder
      *
-     * @param int $id
-     * @param int $reminderId
      * @return mixed
      */
     public function deleteInvoiceReminder(int $id, int $reminderId)

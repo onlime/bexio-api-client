@@ -54,16 +54,16 @@ abstract class AbstractClient
 
     public function persistTokens(string $tokensFile): bool
     {
-        return false !== file_put_contents($tokensFile, json_encode([
+        return file_put_contents($tokensFile, json_encode([
             'accessToken' => $this->getAccessToken(),
             'refreshToken' => $this->getRefreshToken(),
-        ]));
+        ])) !== false;
     }
 
     public function loadTokens(string $tokensFile)
     {
         if (! file_exists($tokensFile)) {
-            throw new \Exception('Tokens file not found: ' . $tokensFile);
+            throw new \Exception('Tokens file not found: '.$tokensFile);
         }
         $tokens = json_decode(file_get_contents($tokensFile));
 
@@ -126,8 +126,8 @@ abstract class AbstractClient
         // prefix path with default API version if there was no version provided
         return implode('/', array_filter([
             self::API_URL,
-            1 === preg_match('/\d\.\d\//', $path) ? '' : self::API_DEFAULT_VERSION,
-            empty($query) ? $path : $path . '?' . http_build_query($query),
+            preg_match('/\d\.\d\//', $path) === 1 ? '' : self::API_DEFAULT_VERSION,
+            empty($query) ? $path : $path.'?'.http_build_query($query),
         ]));
     }
 

@@ -12,7 +12,6 @@ class Accounting extends Bexio
     /**
      * Fetch a list of accounts
      *
-     * @param array $params
      * @return mixed
      */
     public function getAccounts(array $params = [])
@@ -23,7 +22,6 @@ class Accounting extends Bexio
     /**
      * Fetch a list of taxes
      *
-     * @param array $params
      * @return mixed
      */
     public function getTaxes(array $params = [])
@@ -34,7 +32,6 @@ class Accounting extends Bexio
     /**
      * Fetch a list of currencies
      *
-     * @param array $params
      * @return mixed
      */
     public function getCurrencies(array $params = [])
@@ -45,7 +42,6 @@ class Accounting extends Bexio
     /**
      * Create new currency
      *
-     * @param array $params
      * @return mixed
      */
     public function createCurrency(array $params = [])
@@ -56,7 +52,6 @@ class Accounting extends Bexio
     /**
      * Fetch a currency
      *
-     * @param int $id
      * @return mixed
      */
     public function getCurrency(int $id)
@@ -67,7 +62,6 @@ class Accounting extends Bexio
     /**
      * Delete a currency
      *
-     * @param int $id
      * @return mixed
      */
     public function deleteCurrency(int $id)
@@ -78,8 +72,6 @@ class Accounting extends Bexio
     /**
      * Update a currency
      *
-     * @param int $id
-     * @param array $params
      * @return mixed
      */
     public function updateCurrency(int $id, array $params = [])
