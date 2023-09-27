@@ -4,153 +4,96 @@ namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
-/**
- * Class Invoice
- */
 abstract class AbstractDocumentPositions extends Bexio
 {
     protected $documentType = 'kb_foo'; // replace this in concrete class by kb_offer|kb_order|kb_invoice
 
-    /**
-     * @return mixed
-     */
-    public function listDefaultPositions(int $documentId, array $params = [])
+    public function listDefaultPositions(int $documentId, array $params = []): mixed
     {
         return $this->client->get($this->documentType."/$documentId/kb_position_custom", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function showDefaultPosition(int $documentId, int $itemId)
+    public function showDefaultPosition(int $documentId, int $itemId): mixed
     {
         return $this->client->get($this->documentType."/$documentId/kb_position_custom/$itemId");
     }
 
-    /**
-     * @return mixed
-     */
-    public function createDefaultPosition(int $documentId, array $params = [])
+    public function createDefaultPosition(int $documentId, array $params = []): mixed
     {
         return $this->client->post($this->documentType."/$documentId/kb_position_custom", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function editDefaultPosition(int $documentId, int $itemId, array $params = [])
+    public function editDefaultPosition(int $documentId, int $itemId, array $params = []): mixed
     {
         return $this->client->post($this->documentType."/$documentId/kb_position_custom/$itemId", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function overwriteDefaultPosition(int $documentId, int $itemId, array $params = [])
+    public function overwriteDefaultPosition(int $documentId, int $itemId, array $params = []): mixed
     {
         return $this->client->put($this->documentType."/$documentId/kb_position_custom/$itemId", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function deleteDefaultPosition(int $documentId, int $itemId)
+    public function deleteDefaultPosition(int $documentId, int $itemId): mixed
     {
         return $this->client->delete($this->documentType."/$documentId/kb_position_custom/$itemId");
     }
 
-    /**
-     * @return mixed
-     */
-    public function listItemPositions(int $documentId, array $params = [])
+    public function listItemPositions(int $documentId, array $params = []): mixed
     {
         return $this->client->get($this->documentType."/$documentId/kb_position_article", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function showItemPosition(int $documentId, int $itemId)
+    public function showItemPosition(int $documentId, int $itemId): mixed
     {
         return $this->client->get($this->documentType."/$documentId/kb_position_article/$itemId");
     }
 
-    /**
-     * @return mixed
-     */
-    public function createItemPosition(int $documentId, array $params = [])
+    public function createItemPosition(int $documentId, array $params = []): mixed
     {
         return $this->client->post($this->documentType."/$documentId/kb_position_article", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function editItemPosition(int $documentId, int $itemId, array $params = [])
+    public function editItemPosition(int $documentId, int $itemId, array $params = []): mixed
     {
         return $this->client->post($this->documentType."/$documentId/kb_position_article/$itemId", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function overwriteItemPosition(int $documentId, int $itemId, array $params = [])
+    public function overwriteItemPosition(int $documentId, int $itemId, array $params = []): mixed
     {
         return $this->client->put($this->documentType."/$documentId/kb_position_article/$itemId", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function deleteItemPosition(int $documentId, int $itemId)
+    public function deleteItemPosition(int $documentId, int $itemId): mixed
     {
         return $this->client->delete($this->documentType."/$documentId/kb_position_article/$itemId");
     }
 
-    /**
-     * @return mixed
-     */
-    public function listDiscountPositions(int $documentId, array $params = [])
+    public function listDiscountPositions(int $documentId, array $params = []): mixed
     {
         return $this->client->get($this->documentType."/$documentId/kb_position_discount", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function showDiscountPosition(int $documentId, int $itemId)
+    public function showDiscountPosition(int $documentId, int $itemId): mixed
     {
         return $this->client->get($this->documentType."/$documentId/kb_position_discount/$itemId");
     }
 
-    /**
-     * @return mixed
-     */
-    public function createDiscountPosition(int $documentId, array $params = [])
+    public function createDiscountPosition(int $documentId, array $params = []): mixed
     {
         return $this->client->post($this->documentType."/$documentId/kb_position_discount", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function editDiscountPosition(int $documentId, int $itemId, array $params = [])
+    public function editDiscountPosition(int $documentId, int $itemId, array $params = []): mixed
     {
         return $this->client->post($this->documentType."/$documentId/kb_position_discount/$itemId", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function overwriteDiscountPosition(int $documentId, int $itemId, array $params = [])
+    public function overwriteDiscountPosition(int $documentId, int $itemId, array $params = []): mixed
     {
         return $this->client->put($this->documentType."/$documentId/kb_position_discount/$itemId", $params);
     }
 
-    /**
-     * @return mixed
-     */
-    public function deleteDiscountPosition(int $documentId, int $itemId)
+    public function deleteDiscountPosition(int $documentId, int $itemId): mixed
     {
         return $this->client->delete($this->documentType."/$documentId/kb_position_discount/$itemId");
     }

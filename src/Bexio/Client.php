@@ -8,27 +8,27 @@ use GuzzleHttp\Exception\ClientException;
 
 class Client extends AbstractClient
 {
-    public function get(string $path, array $queryParams = [])
+    public function get(string $path, array $queryParams = []): mixed
     {
         return $this->request($path, queryParams: $queryParams);
     }
 
-    public function post(string $path, array $data = [], array $queryParams = [])
+    public function post(string $path, array $data = [], array $queryParams = []): mixed
     {
         return $this->request($path, self::METHOD_POST, $data, $queryParams);
     }
 
-    public function put(string $path, array $data = [], array $queryParams = [])
+    public function put(string $path, array $data = [], array $queryParams = []): mixed
     {
         return $this->request($path, self::METHOD_PUT, $data, $queryParams);
     }
 
-    public function delete(string $path, array $data = [], array $queryParams = [])
+    public function delete(string $path, array $data = [], array $queryParams = []): mixed
     {
         return $this->request($path, self::METHOD_DELETE, $data, $queryParams);
     }
 
-    public function patch(string $path, array $data = [], array $queryParams = [])
+    public function patch(string $path, array $data = [], array $queryParams = []): mixed
     {
         return $this->request($path, self::METHOD_PATCH, $data, $queryParams);
     }
@@ -38,7 +38,7 @@ class Client extends AbstractClient
         string $method = self::METHOD_GET,
         array $data = [],
         array $queryParams = []
-    ) {
+    ): mixed {
         $options = [
             'headers' => [
                 'Authorization' => 'Bearer '.$this->getAccessToken(),

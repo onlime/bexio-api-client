@@ -7,6 +7,7 @@
 - Added Bexio company profile endpoint request methods to `Other` resource.
 - Drop PHP 8.0/8.1 support
 - Integrated laravel/pint as dev requirement for PHP style fixing
+- Using more return types
 
 ## [0.4.1 (2022-03-24)](https://github.com/onlime/bexio-api-client/compare/0.4.0...0.4.1)
 

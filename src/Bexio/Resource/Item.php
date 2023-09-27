@@ -4,67 +4,52 @@ namespace Bexio\Resource;
 
 use Bexio\Bexio;
 
-/**
- * Class Item
- */
 class Item extends Bexio
 {
     /**
      * Gets all items
-     *
-     * @return array
      */
-    public function getItems(array $params = [])
+    public function getItems(array $params = []): mixed
     {
         return $this->client->get('article', $params);
     }
 
     /**
      * Search for items
-     *
-     * @return mixed
      */
-    public function searchItems(array $params = [], array $queryParams = [])
+    public function searchItems(array $params = [], array $queryParams = []): mixed
     {
         return $this->client->post('article/search', $params, $queryParams);
     }
 
     /**
      * Get specific item
-     *
-     * @return mixed
      */
-    public function getItem(int $id)
+    public function getItem(int $id): mixed
     {
         return $this->client->get("article/$id");
     }
 
     /**
      * Add new item
-     *
-     * @return mixed
      */
-    public function createItem(array $params = [])
+    public function createItem(array $params = []): mixed
     {
         return $this->client->post('article', $params);
     }
 
     /**
      * Edit item
-     *
-     * @return mixed
      */
-    public function editItem(int $id, array $params = [])
+    public function editItem(int $id, array $params = []): mixed
     {
         return $this->client->post("article/$id", $params);
     }
 
     /**
      * Delete specific item
-     *
-     * @return mixed
      */
-    public function deleteItem(int $id)
+    public function deleteItem(int $id): mixed
     {
         return $this->client->delete("article/$id");
     }

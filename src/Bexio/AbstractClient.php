@@ -32,9 +32,10 @@ abstract class AbstractClient
     ) {
     }
 
-    public function setAccessToken(string $accessToken)
+    public function setAccessToken(string $accessToken): self
     {
         $this->accessToken = $accessToken;
+        return $this;
     }
 
     public function getAccessToken(): ?string
@@ -42,9 +43,10 @@ abstract class AbstractClient
         return $this->accessToken;
     }
 
-    public function setRefreshToken(string $refreshToken)
+    public function setRefreshToken(string $refreshToken): self
     {
         $this->refreshToken = $refreshToken;
+        return $this;
     }
 
     public function getRefreshToken(): ?string
@@ -60,7 +62,7 @@ abstract class AbstractClient
         ])) !== false;
     }
 
-    public function loadTokens(string $tokensFile)
+    public function loadTokens(string $tokensFile): self
     {
         if (! file_exists($tokensFile)) {
             throw new \Exception('Tokens file not found: '.$tokensFile);
@@ -75,6 +77,8 @@ abstract class AbstractClient
             $this->refreshToken();
             $this->persistTokens($tokensFile);
         }
+
+        return $this;
     }
 
     public function getOpenIDConnectClient(): OpenIDConnectClient
@@ -88,7 +92,7 @@ abstract class AbstractClient
         return $oidc;
     }
 
-    public function authenticate(string|array $scopes, string $redirectUrl)
+    public function authenticate(string|array $scopes, string $redirectUrl): self
     {
         if (! is_array($scopes)) {
             $scopes = explode(' ', $scopes);
@@ -101,6 +105,8 @@ abstract class AbstractClient
 
         $this->setAccessToken($oidc->getAccessToken());
         $this->setRefreshToken($oidc->getRefreshToken());
+
+        return $this;
     }
 
     public function isAccessTokenExpired($gracePeriod = 30): bool
@@ -113,12 +119,13 @@ abstract class AbstractClient
         return time() > ($expiry - $gracePeriod);
     }
 
-    public function refreshToken()
+    public function refreshToken(): self
     {
         $oidc = $this->getOpenIDConnectClient();
         $oidc->refreshToken($this->getRefreshToken());
         $this->setAccessToken($oidc->getAccessToken());
         $this->setRefreshToken($oidc->getRefreshToken());
+        return $this;
     }
 
     public function getFullApiUrl(string $path = '', array $query = []): string
@@ -131,13 +138,13 @@ abstract class AbstractClient
         ]));
     }
 
-    abstract public function get(string $path, array $queryParams = []);
+    abstract public function get(string $path, array $queryParams = []): mixed;
 
-    abstract public function post(string $path, array $data = [], array $queryParams = []);
+    abstract public function post(string $path, array $data = [], array $queryParams = []): mixed;
 
-    abstract public function put(string $path, array $data = [], array $queryParams = []);
+    abstract public function put(string $path, array $data = [], array $queryParams = []): mixed;
 
-    abstract public function delete(string $path, array $data = [], array $queryParams = []);
+    abstract public function delete(string $path, array $data = [], array $queryParams = []): mixed;
 
-    abstract public function patch(string $path, array $data = [], array $queryParams = []);
+    abstract public function patch(string $path, array $data = [], array $queryParams = []): mixed;
 }
