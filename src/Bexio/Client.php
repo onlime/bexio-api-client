@@ -56,7 +56,7 @@ class Client extends AbstractClient
         }
 
         try {
-            $response = (new GuzzleClient())->request($method, $this->getFullApiUrl($path), $options);
+            $response = (new GuzzleClient)->request($method, $this->getFullApiUrl($path), $options);
         } catch (ClientException $e) {
             // transform Guzzle ClientException into some more readable form, so that body content does not get truncated
             $body = json_decode($e->getResponse()->getBody()->getContents());
