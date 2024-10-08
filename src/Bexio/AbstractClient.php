@@ -6,7 +6,7 @@ use Jumbojett\OpenIDConnectClient;
 
 abstract class AbstractClient
 {
-    const PROVIDER_URL = 'https://idp.bexio.com';
+    const PROVIDER_URL = 'https://auth.bexio.com/realms/bexio';
 
     const API_URL = 'https://api.bexio.com';
 

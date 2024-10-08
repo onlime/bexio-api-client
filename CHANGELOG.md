@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## [0.5.x (unreleased)](https://github.com/onlime/bexio-api-client/compare/0.5.0...main)
+## [0.6.x (unreleased)](https://github.com/onlime/bexio-api-client/compare/0.5.0...main)
+
+## [0.6.0 (2024-10-08)](https://github.com/onlime/bexio-api-client/compare/0.5.0...0.6.0)
+
+- Updated `jumbojett/openid-connect-php` to v1.0
+- Updated Bexio OpenID Connect provider URL to `https://auth.bexio.com/realms/bexio`
 
 ## [0.5.0 (2023-09-27)](https://github.com/onlime/bexio-api-client/compare/0.4.1...0.5.0)
 
