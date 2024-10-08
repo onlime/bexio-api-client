@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## [0.6.x (unreleased)](https://github.com/onlime/bexio-api-client/compare/0.5.0...main)
+## [0.6.x (unreleased)](https://github.com/onlime/bexio-api-client/compare/0.6.1...main)
+
+## [0.6.1 (2024-10-09)](https://github.com/onlime/bexio-api-client/compare/0.6.0...0.6.1)
+
+- Fix for `jumbojett/openid-connect-php` v1.0: Only set accessToken if already loaded in `Bexio\Client` instance.
 
 ## [0.6.0 (2024-10-08)](https://github.com/onlime/bexio-api-client/compare/0.5.0...0.6.0)
 

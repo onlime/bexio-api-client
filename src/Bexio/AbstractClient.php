@@ -87,7 +87,7 @@ abstract class AbstractClient
             $this->clientId,
             $this->clientSecret
         );
-        $oidc->setAccessToken($this->accessToken);
+        $this->accessToken && $oidc->setAccessToken($this->accessToken);
         return $oidc;
     }
 
