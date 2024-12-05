@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## [0.6.x (unreleased)](https://github.com/onlime/bexio-api-client/compare/0.6.1...main)
+## [0.6.x (unreleased)](https://github.com/onlime/bexio-api-client/compare/0.6.2...main)
+
+## [0.6.2 (2024-12-05)](https://github.com/onlime/bexio-api-client/compare/0.6.1...0.6.2)
+
+- Fix token refresh for new Bexio OpenID Connect provider URL `https://auth.bexio.com/realms/bexio`: Always store scopes in tokens file, as they are also used in `refreshToken()`.
+- Add `SensitiveParameter` attribute to all sensitive parameters to avoid logging/leaking them.
 
 ## [0.6.1 (2024-10-09)](https://github.com/onlime/bexio-api-client/compare/0.6.0...0.6.1)
 

@@ -31,10 +31,11 @@ abstract class AbstractClient
 
     public function __construct(
         public string $clientId,
+        #[\SensitiveParameter]
         public string $clientSecret
     ) {}
 
-    public function setAccessToken(string $accessToken): self
+    public function setAccessToken(#[\SensitiveParameter] string $accessToken): self
     {
         $this->accessToken = $accessToken;
         return $this;
@@ -45,7 +46,7 @@ abstract class AbstractClient
         return $this->accessToken;
     }
 
-    public function setRefreshToken(string $refreshToken): self
+    public function setRefreshToken(#[\SensitiveParameter] string $refreshToken): self
     {
         $this->refreshToken = $refreshToken;
         return $this;
