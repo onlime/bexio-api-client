@@ -7,7 +7,7 @@ use Jumbojett\OpenIDConnectClient;
 
 abstract class AbstractClient
 {
-    const PROVIDER_URL = 'https://idp.bexio.com';
+    const PROVIDER_URL = 'https://auth.bexio.com/realms/bexio';
 
     const API_URL = 'https://api.bexio.com';
 
@@ -104,7 +104,7 @@ abstract class AbstractClient
             $this->clientSecret
         );
         $oidc->addScope($this->scopes);
-        $oidc->setAccessToken($this->accessToken);
+        $this->accessToken && $oidc->setAccessToken($this->accessToken);
         return $oidc;
     }
 
