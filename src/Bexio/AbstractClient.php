@@ -2,6 +2,7 @@
 
 namespace Bexio;
 
+use Bexio\Exception\BexioClientException;
 use Jumbojett\OpenIDConnectClient;
 
 abstract class AbstractClient
@@ -26,11 +27,12 @@ abstract class AbstractClient
 
     private ?string $refreshToken = null;
 
+    private array $scopes = [];
+
     public function __construct(
         public string $clientId,
         public string $clientSecret
-    ) {
-    }
+    ) {}
 
     public function setAccessToken(string $accessToken): self
     {
@@ -54,11 +56,23 @@ abstract class AbstractClient
         return $this->refreshToken;
     }
 
+    public function setScopes(array|string $scopes): self
+    {
+        $this->scopes = is_array($scopes) ? $scopes : explode(' ', $scopes);
+        return $this;
+    }
+
+    public function getScopes(): array
+    {
+        return $this->scopes;
+    }
+
     public function persistTokens(string $tokensFile): bool
     {
         return file_put_contents($tokensFile, json_encode([
             'accessToken' => $this->getAccessToken(),
             'refreshToken' => $this->getRefreshToken(),
+            'scope' => implode(' ', $this->getScopes()),
         ])) !== false;
     }
 
@@ -71,6 +85,7 @@ abstract class AbstractClient
 
         $this->setAccessToken($tokens->accessToken);
         $this->setRefreshToken($tokens->refreshToken);
+        $this->setScopes($tokens->scope ?? []);
 
         // Refresh access token if it is expired
         if ($this->isAccessTokenExpired()) {
@@ -88,23 +103,22 @@ abstract class AbstractClient
             $this->clientId,
             $this->clientSecret
         );
+        $oidc->addScope($this->scopes);
         $oidc->setAccessToken($this->accessToken);
         return $oidc;
     }
 
     public function authenticate(string|array $scopes, string $redirectUrl): self
     {
-        if (! is_array($scopes)) {
-            $scopes = explode(' ', $scopes);
-        }
+        $this->setScopes($scopes);
 
         $oidc = $this->getOpenIDConnectClient();
         $oidc->setRedirectURL($redirectUrl);
-        $oidc->addScope($scopes);
         $oidc->authenticate();
 
         $this->setAccessToken($oidc->getAccessToken());
         $this->setRefreshToken($oidc->getRefreshToken());
+        $this->setScopes($oidc->getScopes());
 
         return $this;
     }
@@ -122,9 +136,13 @@ abstract class AbstractClient
     public function refreshToken(): self
     {
         $oidc = $this->getOpenIDConnectClient();
-        $oidc->refreshToken($this->getRefreshToken());
+        $json = $oidc->refreshToken($this->getRefreshToken());
+        if ($json->error ?? null) {
+            throw new BexioClientException("$json->error: ".($json->error_description ?? '(no description)'));
+        }
         $this->setAccessToken($oidc->getAccessToken());
         $this->setRefreshToken($oidc->getRefreshToken());
+        $this->setScopes($oidc->getScopes());
         return $this;
     }
 
